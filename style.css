@@ -1075,3 +1075,198 @@ body.map-modal-open {
     margin-left: auto;
   }
 }
+
+/* ================================
+   ACCOUNT
+================================ */
+
+.account-section {
+  overflow: hidden;
+}
+
+.account-description {
+  margin: -5px 0 28px;
+  color: #847b76;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.account-notice {
+  margin-bottom: 35px;
+  padding: 14px 18px;
+  background: #faf7f5;
+  color: #857a74;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.account-group {
+  margin-bottom: 12px;
+  border: 1px solid #e4dcd7;
+  background: #fff;
+}
+
+.account-group-toggle {
+  display: flex;
+  width: 100%;
+  min-height: 59px;
+  padding: 0 20px;
+  border: 0;
+  background: transparent;
+  color: #554d48;
+  font-family: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.account-toggle-icon {
+  color: #a58979;
+  font-family: Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 200;
+  line-height: 1;
+  transition: transform 0.3s ease;
+}
+
+.account-group.is-open .account-toggle-icon {
+  transform: rotate(45deg);
+}
+
+.account-group-content {
+  max-height: 0;
+  padding: 0 16px;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-height 0.5s ease,
+    opacity 0.3s ease,
+    padding 0.4s ease;
+}
+
+.account-group.is-open .account-group-content {
+  max-height: 1000px;
+  padding-top: 4px;
+  padding-bottom: 18px;
+  opacity: 1;
+}
+
+.account-card {
+  padding: 20px 4px;
+  border-top: 1px solid #ebe4df;
+  text-align: left;
+}
+
+.account-card-header {
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.account-role {
+  display: block;
+  margin-bottom: 5px;
+  color: #aa9386;
+  font-size: 10px;
+}
+
+.account-card-header strong {
+  color: #4e4641;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.account-bank {
+  padding-top: 17px;
+  color: #857a74;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.account-number {
+  margin: 16px 0;
+  color: #4e4641;
+  font-family:
+    Arial,
+    sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+}
+
+.account-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.account-copy-button {
+  min-height: 42px;
+  padding: 8px 5px;
+  border: 1px solid #d9cec7;
+  background: #fff;
+  color: #665c56;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.account-copy-button:hover {
+  border-color: #a98c7d;
+  background: #a98c7d;
+  color: #fff;
+}
+
+.account-copy-all {
+  background: #faf7f5;
+}
+
+/* 복사 완료 메시지 */
+
+.copy-toast {
+  position: fixed;
+  z-index: 12000;
+  right: 20px;
+  bottom: 24px;
+  left: 20px;
+  max-width: 360px;
+  margin: 0 auto;
+  padding: 14px 18px;
+  border-radius: 4px;
+  background: rgba(55, 49, 46, 0.94);
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.3s ease;
+  pointer-events: none;
+}
+
+.copy-toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 360px) {
+  .account-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 700px) {
+  .account-section > .account-group,
+  .account-notice {
+    max-width: 620px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}

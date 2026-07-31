@@ -179,3 +179,105 @@ contactToggleButtons.forEach((button) => {
       : "연락하기";
   });
 });
+
+/* ================================
+   계좌번호 펼치기
+================================ */
+
+const accountGroupToggles = document.querySelectorAll(
+  ".account-group-toggle"
+);
+
+accountGroupToggles.forEach((button) => {
+  button.addEventListener("click", () => {
+    const accountGroup = button.closest(".account-group");
+
+    if (!accountGroup) {
+      return;
+    }
+
+    const isOpen = accountGroup.classList.toggle("is-open");
+
+    button.setAttribute(
+      "aria-expanded",
+      String(isOpen)
+    );
+  });
+});
+
+
+/* ================================
+   계좌정보 복사
+================================ */
+
+const accountCopyButtons = document.querySelectorAll(
+  ".account-copy-button"
+);
+
+const copyToast = document.getElementById("copy-toast");
+
+let copyToastTimer;
+
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch (error) {
+    const temporaryInput = document.createElement("textarea");
+
+    temporaryInput.value = text;
+    temporaryInput.setAttribute("readonly", "");
+    temporaryInput.style.position = "fixed";
+    temporaryInput.style.opacity = "0";
+
+    document.body.appendChild(temporaryInput);
+    temporaryInput.select();
+
+    const copied = document.execCommand("copy");
+
+    temporaryInput.remove();
+
+    if (!copied) {
+      throw new Error("복사에 실패했습니다.");
+    }
+  }
+}
+
+function showCopyToast(message) {
+  if (!copyToast) {
+    return;
+  }
+
+  window.clearTimeout(copyToastTimer);
+
+  copyToast.textContent = message;
+  copyToast.classList.add("is-visible");
+
+  copyToastTimer = window.setTimeout(() => {
+    copyToast.classList.remove("is-visible");
+  }, 1800);
+}
+
+accountCopyButtons.forEach((button) => {
+  button.addEventListener("click", async () => {
+    const textToCopy = button.dataset.copy;
+
+    if (!textToCopy) {
+      return;
+    }
+
+    try {
+      await copyText(textToCopy);
+
+      const message = button.classList.contains(
+        "account-copy-all"
+      )
+        ? "계좌정보가 복사되었습니다."
+        : "계좌번호가 복사되었습니다.";
+
+      showCopyToast(message);
+    } catch (error) {
+      console.error(error);
+      showCopyToast("복사하지 못했습니다.");
+    }
+  });
+});
