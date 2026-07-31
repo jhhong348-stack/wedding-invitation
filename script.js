@@ -281,3 +281,643 @@ accountCopyButtons.forEach((button) => {
     }
   });
 });
+
+/* ================================
+   SUPABASE RSVP
+================================ */
+
+const SUPABASE_URL =
+  "https://ttvgcultujlkdecaepag.supabase.co/";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_Ji7VcJRMhodBlhcMx0hidA_ra79eKGK";
+
+const RSVP_STORAGE_KEY = "wedding_rsvp_edit_credentials_v1";
+
+const rsvpForm = document.getElementById("rsvp-form");
+const rsvpResult = document.getElementById("rsvp-result");
+const rsvpError = document.getElementById("rsvp-error");
+
+const rsvpSubmitButton = document.getElementById(
+  "rsvp-submit-button"
+);
+
+const rsvpSubmitText = rsvpSubmitButton?.querySelector(
+  ".rsvp-submit-text"
+);
+
+const rsvpSubmitLoading = rsvpSubmitButton?.querySelector(
+  ".rsvp-submit-loading"
+);
+
+const rsvpEditPanel = document.querySelector(
+  ".rsvp-edit-panel"
+);
+
+const rsvpEditToggle = document.getElementById(
+  "rsvp-edit-toggle"
+);
+
+const rsvpLoadButton = document.getElementById(
+  "rsvp-load-button"
+);
+
+const rsvpLoadSavedButton = document.getElementById(
+  "rsvp-load-saved-button"
+);
+
+const rsvpConfirmationInput = document.getElementById(
+  "rsvp-confirmation-code"
+);
+
+const rsvpEditCodeInput = document.getElementById(
+  "rsvp-edit-code"
+);
+
+const rsvpMessage = document.getElementById("rsvp-message");
+const rsvpMessageCount = document.getElementById(
+  "rsvp-message-count"
+);
+
+const rsvpCountField = document.getElementById(
+  "rsvp-count-field"
+);
+
+const rsvpCompanionField = document.getElementById(
+  "rsvp-companion-field"
+);
+
+const rsvpCountSelect = document.getElementById("rsvp-count");
+
+const rsvpResultTitle = document.getElementById(
+  "rsvp-result-title"
+);
+
+const rsvpResultConfirmation = document.getElementById(
+  "rsvp-result-confirmation"
+);
+
+const rsvpResultEditCode = document.getElementById(
+  "rsvp-result-edit-code"
+);
+
+const rsvpCopyCodesButton = document.getElementById(
+  "rsvp-copy-codes-button"
+);
+
+const rsvpEditAgainButton = document.getElementById(
+  "rsvp-edit-again-button"
+);
+
+let currentRsvpCredentials = null;
+
+
+/* -------------------------------
+   Supabase RPC 호출
+-------------------------------- */
+
+async function callRsvpRpc(functionName, payload) {
+  const response = await fetch(
+    `${SUPABASE_URL}/rest/v1/rpc/${functionName}`,
+    {
+      method: "POST",
+      headers: {
+        "apikey": SUPABASE_PUBLISHABLE_KEY,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    }
+  );
+
+  const responseText = await response.text();
+
+  let responseData = null;
+
+  if (responseText) {
+    try {
+      responseData = JSON.parse(responseText);
+    } catch (error) {
+      responseData = responseText;
+    }
+  }
+
+  if (!response.ok) {
+    const serverMessage =
+      responseData?.message ||
+      responseData?.hint ||
+      "서버 요청을 처리하지 못했습니다.";
+
+    throw new Error(serverMessage);
+  }
+
+  return responseData;
+}
+
+
+/* -------------------------------
+   브라우저 수정정보 저장
+-------------------------------- */
+
+function saveRsvpCredentials(confirmationCode, editCode) {
+  const credentials = {
+    confirmationCode,
+    editCode
+  };
+
+  localStorage.setItem(
+    RSVP_STORAGE_KEY,
+    JSON.stringify(credentials)
+  );
+
+  currentRsvpCredentials = credentials;
+
+  if (rsvpLoadSavedButton) {
+    rsvpLoadSavedButton.hidden = false;
+  }
+}
+
+function getSavedRsvpCredentials() {
+  try {
+    const savedValue = localStorage.getItem(RSVP_STORAGE_KEY);
+
+    if (!savedValue) {
+      return null;
+    }
+
+    const parsedValue = JSON.parse(savedValue);
+
+    if (
+      !parsedValue.confirmationCode ||
+      !parsedValue.editCode
+    ) {
+      return null;
+    }
+
+    return parsedValue;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+
+/* -------------------------------
+   화면 상태
+-------------------------------- */
+
+function setRsvpLoading(isLoading) {
+  if (!rsvpSubmitButton) {
+    return;
+  }
+
+  rsvpSubmitButton.disabled = isLoading;
+
+  if (rsvpSubmitText) {
+    rsvpSubmitText.hidden = isLoading;
+  }
+
+  if (rsvpSubmitLoading) {
+    rsvpSubmitLoading.hidden = !isLoading;
+  }
+}
+
+function showRsvpError(message) {
+  if (rsvpError) {
+    rsvpError.textContent = message;
+  }
+}
+
+function clearRsvpError() {
+  showRsvpError("");
+}
+
+function showRsvpForm() {
+  if (rsvpForm) {
+    rsvpForm.hidden = false;
+  }
+
+  if (rsvpResult) {
+    rsvpResult.hidden = true;
+  }
+}
+
+function showRsvpResult(result) {
+  if (!rsvpForm || !rsvpResult) {
+    return;
+  }
+
+  rsvpForm.hidden = true;
+  rsvpResult.hidden = false;
+
+  if (rsvpResultTitle) {
+    rsvpResultTitle.textContent =
+      result.mode === "updated"
+        ? "응답이 수정되었습니다."
+        : "정상적으로 접수되었습니다.";
+  }
+
+  if (rsvpResultConfirmation) {
+    rsvpResultConfirmation.textContent =
+      result.confirmation_code;
+  }
+
+  if (rsvpResultEditCode) {
+    rsvpResultEditCode.textContent = result.edit_code;
+  }
+
+  rsvpResult.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+}
+
+
+/* -------------------------------
+   참석 여부에 따른 인원 표시
+-------------------------------- */
+
+function updateAttendanceFields() {
+  const attendanceValue =
+    rsvpForm?.querySelector(
+      'input[name="attendance"]:checked'
+    )?.value;
+
+  const isAttending = attendanceValue === "attending";
+
+  if (rsvpCountField) {
+    rsvpCountField.hidden = !isAttending;
+  }
+
+  if (rsvpCompanionField) {
+    rsvpCompanionField.hidden = !isAttending;
+  }
+
+  if (!isAttending && rsvpCountSelect) {
+    rsvpCountSelect.value = "1";
+  }
+}
+
+rsvpForm
+  ?.querySelectorAll('input[name="attendance"]')
+  .forEach((radio) => {
+    radio.addEventListener(
+      "change",
+      updateAttendanceFields
+    );
+  });
+
+
+/* -------------------------------
+   글자수 표시
+-------------------------------- */
+
+rsvpMessage?.addEventListener("input", () => {
+  if (rsvpMessageCount) {
+    rsvpMessageCount.textContent =
+      String(rsvpMessage.value.length);
+  }
+});
+
+
+/* -------------------------------
+   수정 영역 열기
+-------------------------------- */
+
+rsvpEditToggle?.addEventListener("click", () => {
+  if (!rsvpEditPanel) {
+    return;
+  }
+
+  const isOpen = rsvpEditPanel.classList.toggle("is-open");
+
+  rsvpEditToggle.setAttribute(
+    "aria-expanded",
+    String(isOpen)
+  );
+});
+
+
+/* -------------------------------
+   기존 응답을 폼에 반영
+-------------------------------- */
+
+function fillRsvpForm(data) {
+  if (!rsvpForm || !data) {
+    return;
+  }
+
+  document.getElementById("rsvp-name").value =
+    data.guest_name || "";
+
+  const sideRadio = rsvpForm.querySelector(
+    `input[name="guest_side"][value="${data.guest_side}"]`
+  );
+
+  if (sideRadio) {
+    sideRadio.checked = true;
+  }
+
+  const attendanceRadio = rsvpForm.querySelector(
+    `input[name="attendance"][value="${data.attendance}"]`
+  );
+
+  if (attendanceRadio) {
+    attendanceRadio.checked = true;
+  }
+
+  document.getElementById("rsvp-count").value =
+    String(data.guest_count || 1);
+
+  document.getElementById("rsvp-companions").value =
+    data.companion_names || "";
+
+  document.getElementById("rsvp-phone").value =
+    data.phone || "";
+
+  document.getElementById("rsvp-message").value =
+    data.message || "";
+
+  document.getElementById("rsvp-language").value =
+    data.language || "ko";
+
+  if (rsvpMessageCount) {
+    rsvpMessageCount.textContent = String(
+      (data.message || "").length
+    );
+  }
+
+  updateAttendanceFields();
+  showRsvpForm();
+
+  rsvpForm.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
+
+
+/* -------------------------------
+   기존 응답 불러오기
+-------------------------------- */
+
+async function loadExistingRsvp(credentials) {
+  clearRsvpError();
+
+  if (
+    !credentials?.confirmationCode ||
+    !credentials?.editCode
+  ) {
+    showRsvpError(
+      "접수번호와 수정 코드를 모두 입력해주세요."
+    );
+    return;
+  }
+
+  if (rsvpLoadButton) {
+    rsvpLoadButton.disabled = true;
+    rsvpLoadButton.textContent = "불러오는 중...";
+  }
+
+  try {
+    const data = await callRsvpRpc(
+      "get_rsvp_for_edit",
+      {
+        p_confirmation_code:
+          credentials.confirmationCode.trim().toUpperCase(),
+
+        p_edit_code:
+          credentials.editCode.trim().toUpperCase()
+      }
+    );
+
+    if (!data) {
+      throw new Error(
+        "접수번호 또는 수정 코드가 올바르지 않습니다."
+      );
+    }
+
+    currentRsvpCredentials = {
+      confirmationCode: data.confirmation_code,
+      editCode: credentials.editCode
+        .trim()
+        .toUpperCase()
+    };
+
+    saveRsvpCredentials(
+      currentRsvpCredentials.confirmationCode,
+      currentRsvpCredentials.editCode
+    );
+
+    fillRsvpForm(data);
+
+    rsvpEditPanel?.classList.remove("is-open");
+
+    rsvpEditToggle?.setAttribute(
+      "aria-expanded",
+      "false"
+    );
+  } catch (error) {
+    console.error(error);
+    showRsvpError(error.message);
+  } finally {
+    if (rsvpLoadButton) {
+      rsvpLoadButton.disabled = false;
+      rsvpLoadButton.textContent =
+        "기존 응답 불러오기 / 载入回复";
+    }
+  }
+}
+
+rsvpLoadButton?.addEventListener("click", () => {
+  loadExistingRsvp({
+    confirmationCode: rsvpConfirmationInput?.value || "",
+    editCode: rsvpEditCodeInput?.value || ""
+  });
+});
+
+rsvpLoadSavedButton?.addEventListener("click", () => {
+  const savedCredentials = getSavedRsvpCredentials();
+
+  if (savedCredentials) {
+    loadExistingRsvp(savedCredentials);
+  }
+});
+
+
+/* -------------------------------
+   폼 제출
+-------------------------------- */
+
+rsvpForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  clearRsvpError();
+
+  /*
+    숨겨진 칸에 값이 있으면 봇 요청으로 간주합니다.
+  */
+  const honeypotValue =
+    document.getElementById("rsvp-website")?.value;
+
+  if (honeypotValue) {
+    return;
+  }
+
+  if (!rsvpForm.checkValidity()) {
+    rsvpForm.reportValidity();
+    return;
+  }
+
+  const guestName =
+    document.getElementById("rsvp-name").value.trim();
+
+  const guestSide = rsvpForm.querySelector(
+    'input[name="guest_side"]:checked'
+  )?.value;
+
+  const attendance = rsvpForm.querySelector(
+    'input[name="attendance"]:checked'
+  )?.value;
+
+  const privacyConsent =
+    document.getElementById("rsvp-consent").checked;
+
+  if (!guestName || !guestSide || !attendance) {
+    showRsvpError(
+      "필수 항목을 모두 입력해주세요."
+    );
+    return;
+  }
+
+  let guestCount = 0;
+  let companionNames = null;
+
+  if (attendance === "attending") {
+    guestCount = Number(
+      document.getElementById("rsvp-count").value
+    );
+
+    companionNames =
+      document
+        .getElementById("rsvp-companions")
+        .value
+        .trim() || null;
+  }
+
+  const savedCredentials =
+    currentRsvpCredentials ||
+    getSavedRsvpCredentials();
+
+  const payload = {
+    p_guest_name: guestName,
+    p_guest_side: guestSide,
+    p_attendance: attendance,
+    p_guest_count: guestCount,
+    p_privacy_consent: privacyConsent,
+
+    p_companion_names: companionNames,
+
+    p_phone:
+      document.getElementById("rsvp-phone").value.trim()
+      || null,
+
+    p_message:
+      document.getElementById("rsvp-message").value.trim()
+      || null,
+
+    p_language:
+      document.getElementById("rsvp-language").value,
+
+    p_confirmation_code:
+      savedCredentials?.confirmationCode || null,
+
+    p_edit_code:
+      savedCredentials?.editCode || null
+  };
+
+  setRsvpLoading(true);
+
+  try {
+    const result = await callRsvpRpc(
+      "submit_or_update_rsvp",
+      payload
+    );
+
+    if (!result?.success) {
+      throw new Error(
+        "응답을 저장하지 못했습니다."
+      );
+    }
+
+    saveRsvpCredentials(
+      result.confirmation_code,
+      result.edit_code
+    );
+
+    showRsvpResult(result);
+  } catch (error) {
+    console.error(error);
+
+    /*
+      저장된 수정정보가 유효하지 않은 경우,
+      사용자 몰래 새 응답을 만들지 않고 오류를 안내합니다.
+    */
+    showRsvpError(
+      error.message ||
+      "응답을 전송하지 못했습니다. 잠시 후 다시 시도해주세요."
+    );
+  } finally {
+    setRsvpLoading(false);
+  }
+});
+
+
+/* -------------------------------
+   접수정보 복사
+-------------------------------- */
+
+rsvpCopyCodesButton?.addEventListener("click", async () => {
+  const confirmationCode =
+    rsvpResultConfirmation?.textContent || "";
+
+  const editCode =
+    rsvpResultEditCode?.textContent || "";
+
+  const copyValue =
+    `결혼식 RSVP 접수정보\n` +
+    `접수번호: ${confirmationCode}\n` +
+    `수정 코드: ${editCode}`;
+
+  try {
+    await copyText(copyValue);
+    showCopyToast("접수정보가 복사되었습니다.");
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+
+/* -------------------------------
+   다시 수정
+-------------------------------- */
+
+rsvpEditAgainButton?.addEventListener("click", () => {
+  showRsvpForm();
+
+  rsvpForm?.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+});
+
+
+/* -------------------------------
+   초기 상태
+-------------------------------- */
+
+const initialSavedCredentials = getSavedRsvpCredentials();
+
+if (initialSavedCredentials && rsvpLoadSavedButton) {
+  rsvpLoadSavedButton.hidden = false;
+}
+
+updateAttendanceFields();

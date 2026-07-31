@@ -389,13 +389,368 @@ body {
   cursor: pointer;
 }
 
-/* RSVP */
-.rsvp .body-text {
-  margin-bottom: 28px;
+/* ================================
+   RSVP
+================================ */
+
+.rsvp-section {
+  overflow: hidden;
 }
 
-.rsvp .button {
+.rsvp-description {
+  margin: -5px 0 35px;
+  color: #847b76;
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+.rsvp-description span {
+  display: block;
+  margin-top: 4px;
+  color: #9b918b;
+  font-size: 11px;
+}
+
+.rsvp-edit-panel {
+  margin-bottom: 25px;
+  border: 1px solid #e4dcd7;
+  background: #fff;
+  text-align: left;
+}
+
+.rsvp-edit-toggle {
+  display: flex;
   width: 100%;
+  min-height: 58px;
+  padding: 0 18px;
+  border: 0;
+  background: transparent;
+  color: #625953;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rsvp-edit-toggle span {
+  color: #a58979;
+  font-size: 21px;
+  transition: transform 0.3s ease;
+}
+
+.rsvp-edit-panel.is-open .rsvp-edit-toggle span {
+  transform: rotate(45deg);
+}
+
+.rsvp-edit-content {
+  max-height: 0;
+  padding: 0 18px;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-height 0.45s ease,
+    opacity 0.25s ease,
+    padding 0.35s ease;
+}
+
+.rsvp-edit-panel.is-open .rsvp-edit-content {
+  max-height: 600px;
+  padding-top: 5px;
+  padding-bottom: 20px;
+  opacity: 1;
+}
+
+.rsvp-edit-content > p {
+  margin: 0 0 18px;
+  color: #8b817b;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.rsvp-form {
+  padding: 28px 20px;
+  border: 1px solid #e3dad4;
+  background: #faf8f6;
+  text-align: left;
+}
+
+.rsvp-field,
+.rsvp-fieldset {
+  margin: 0 0 27px;
+  padding: 0;
+  border: 0;
+}
+
+.rsvp-field label,
+.rsvp-fieldset legend {
+  display: block;
+  margin-bottom: 10px;
+  color: #554d48;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.required-mark {
+  color: #b77972;
+}
+
+.rsvp-field input,
+.rsvp-field select,
+.rsvp-field textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 13px;
+  border: 1px solid #dcd2cc;
+  border-radius: 0;
+  outline: none;
+  background: #fff;
+  color: #4e4743;
+  font-family: inherit;
+  font-size: 14px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.rsvp-field textarea {
+  resize: vertical;
+  line-height: 1.7;
+}
+
+.rsvp-field input:focus,
+.rsvp-field select:focus,
+.rsvp-field textarea:focus {
+  border-color: #a98a7a;
+  box-shadow: 0 0 0 2px rgba(169, 138, 122, 0.1);
+}
+
+.rsvp-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.rsvp-choice {
+  position: relative;
+  cursor: pointer;
+}
+
+.rsvp-choice input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rsvp-choice span {
+  display: flex;
+  min-height: 65px;
+  padding: 8px 3px;
+  border: 1px solid #dcd2cc;
+  background: #fff;
+  color: #69605b;
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.rsvp-choice small {
+  margin-top: 3px;
+  color: inherit;
+  font-size: 9px;
+  opacity: 0.75;
+}
+
+.rsvp-choice input:checked + span {
+  border-color: #9b7968;
+  background: #9b7968;
+  color: #fff;
+}
+
+.rsvp-character-count {
+  margin: 5px 0 0;
+  color: #a39993;
+  font-size: 9px;
+  text-align: right;
+}
+
+.rsvp-consent {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 9px;
+  margin: 5px 0 24px;
+  color: #6f6661;
+  font-size: 10px;
+  line-height: 1.7;
+  align-items: start;
+  cursor: pointer;
+}
+
+.rsvp-consent input {
+  width: 16px;
+  height: 16px;
+  margin: 2px 0 0;
+  accent-color: #987665;
+}
+
+.rsvp-consent small {
+  color: #948983;
+  font-size: 9px;
+}
+
+.rsvp-submit-button,
+.rsvp-secondary-button {
+  display: flex;
+  width: 100%;
+  min-height: 50px;
+  padding: 11px 16px;
+  border: 1px solid #987665;
+  background: #987665;
+  color: #fff;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.rsvp-submit-button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.rsvp-secondary-button {
+  border-color: #cbbdb5;
+  background: #fff;
+  color: #635a55;
+}
+
+.rsvp-text-button {
+  display: block;
+  margin: 15px auto 0;
+  padding: 5px;
+  border: 0;
+  background: transparent;
+  color: #887468;
+  font-family: inherit;
+  font-size: 10px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.rsvp-error {
+  min-height: 0;
+  margin: 0 0 13px;
+  color: #b35f5f;
+  font-size: 11px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.rsvp-error:empty {
+  display: none;
+}
+
+.rsvp-result {
+  padding: 40px 22px;
+  border: 1px solid #dfd5cf;
+  background: #faf7f5;
+}
+
+.rsvp-result-icon {
+  display: flex;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 20px;
+  border: 1px solid #a38372;
+  border-radius: 50%;
+  color: #8d6c5b;
+  font-size: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.rsvp-result h3 {
+  margin: 0 0 16px;
+  color: #4f4743;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.rsvp-result-description {
+  margin: 0 0 25px;
+  color: #817770;
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+.rsvp-code-list {
+  margin: 0 0 24px;
+  border-top: 1px solid #e1d7d1;
+}
+
+.rsvp-code-list > div {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  padding: 15px 4px;
+  border-bottom: 1px solid #e1d7d1;
+  align-items: center;
+}
+
+.rsvp-code-list dt {
+  color: #96877f;
+  font-size: 10px;
+  text-align: left;
+}
+
+.rsvp-code-list dd {
+  margin: 0;
+  color: #4f4743;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-align: right;
+  word-break: break-all;
+}
+
+.rsvp-honeypot {
+  position: absolute !important;
+  left: -10000px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+}
+
+@media (max-width: 360px) {
+  .rsvp-choice-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rsvp-choice span {
+    min-height: 50px;
+  }
+}
+
+@media (min-width: 700px) {
+  .rsvp-form,
+  .rsvp-edit-panel,
+  .rsvp-result {
+    max-width: 620px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .rsvp-form {
+    padding: 36px 42px;
+  }
 }
 
 /* 하단 */
