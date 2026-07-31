@@ -936,3 +936,142 @@ body.map-modal-open {
     margin-left: auto;
   }
 }
+
+/* ================================
+   CONTACT
+================================ */
+
+.contact-section {
+  overflow: hidden;
+}
+
+.contact-description {
+  margin: -5px 0 42px;
+  color: #847b76;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.contact-group {
+  margin-top: 45px;
+}
+
+.contact-group:first-of-type {
+  margin-top: 0;
+}
+
+.contact-group h3 {
+  margin: 0 0 18px;
+  color: #655b55;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+}
+
+.contact-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  padding: 20px 0;
+  border-bottom: 1px solid #e8e1dc;
+  text-align: left;
+  align-items: center;
+}
+
+.contact-card:first-of-type {
+  border-top: 1px solid #e8e1dc;
+}
+
+.contact-person {
+  min-width: 0;
+}
+
+.contact-role {
+  display: block;
+  margin-bottom: 5px;
+  color: #aa9386;
+  font-size: 11px;
+}
+
+.contact-person strong {
+  color: #4f4743;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.contact-toggle-button {
+  min-width: 83px;
+  padding: 9px 14px;
+  border: 1px solid #cdbeb5;
+  border-radius: 24px;
+  background: transparent;
+  color: #655b55;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.contact-toggle-button:hover,
+.contact-card.is-open .contact-toggle-button {
+  border-color: #997867;
+  background: #997867;
+  color: #fff;
+}
+
+.contact-actions {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-5px);
+  transition:
+    max-height 0.35s ease,
+    opacity 0.25s ease,
+    transform 0.35s ease,
+    margin 0.35s ease;
+}
+
+.contact-card.is-open .contact-actions {
+  max-height: 70px;
+  margin-top: 4px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.contact-action-button {
+  display: flex;
+  min-height: 43px;
+  border: 1px solid #ded4ce;
+  background: #faf7f5;
+  color: #5f5651;
+  font-size: 12px;
+  text-decoration: none;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.contact-action-button:hover {
+  border-color: #a98c7d;
+  background: #a98c7d;
+  color: #fff;
+}
+
+@media (min-width: 700px) {
+  .contact-group {
+    max-width: 620px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}

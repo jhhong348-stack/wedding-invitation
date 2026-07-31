@@ -150,3 +150,32 @@ document.addEventListener("keydown", (event) => {
     closeMapModal();
   }
 });
+
+/* ================================
+   연락처 펼치기
+================================ */
+
+const contactToggleButtons = document.querySelectorAll(
+  ".contact-toggle-button"
+);
+
+contactToggleButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const contactCard = button.closest(".contact-card");
+
+    if (!contactCard) {
+      return;
+    }
+
+    const isOpen = contactCard.classList.toggle("is-open");
+
+    button.setAttribute(
+      "aria-expanded",
+      String(isOpen)
+    );
+
+    button.textContent = isOpen
+      ? "닫기"
+      : "연락하기";
+  });
+});
