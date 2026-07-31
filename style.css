@@ -145,45 +145,165 @@ body {
   letter-spacing: 1px;
 }
 
+/* 예식 정보 */
+.wedding-summary {
+  padding: 38px 20px;
+  border: 1px solid #e6ddd6;
+  background: #faf7f4;
+}
+
+.summary-date {
+  margin: 0;
+  color: #4b433e;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  letter-spacing: 2px;
+}
+
+.summary-day {
+  margin: 3px 0 0;
+  color: #a18474;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+}
+
+.summary-divider {
+  width: 30px;
+  height: 1px;
+  margin: 25px auto;
+  background: #b9a69b;
+}
+
+.summary-time {
+  margin: 0 0 7px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.summary-venue {
+  margin: 0;
+  font-size: 16px;
+}
+
+.summary-address {
+  margin: 10px 0 0;
+  color: #837a75;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.wedding-detail-list {
+  margin-top: 25px;
+  border-top: 1px solid #eee6e0;
+}
+
+.wedding-detail-row {
+  display: grid;
+  grid-template-columns: 55px 1fr;
+  gap: 15px;
+  padding: 17px 2px;
+  border-bottom: 1px solid #eee6e0;
+  text-align: left;
+}
+
+.wedding-detail-row span {
+  color: #a18474;
+  font-size: 13px;
+}
+
+.wedding-detail-row strong {
+  color: #4d4641;
+  font-size: 14px;
+  font-weight: 500;
+}
+
 /* 달력 */
 .calendar {
   max-width: 380px;
   margin: 0 auto;
+  padding: 25px 16px;
+  border-top: 1px solid #ddd3cc;
+  border-bottom: 1px solid #ddd3cc;
 }
 
-.calendar-row {
+.calendar-week,
+.calendar-days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 8px 4px;
-  align-items: center;
 }
 
 .calendar-header {
-  margin-bottom: 14px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #ddd4cc;
-  font-size: 13px;
+  margin-bottom: 13px;
+  color: #857b75;
+  font-size: 12px;
 }
 
-.calendar-row span {
+.calendar-header span {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 36px;
+  min-height: 30px;
+}
+
+.calendar-days {
+  row-gap: 8px;
+}
+
+.calendar-days > span {
+  position: relative;
+  display: flex;
+  min-height: 43px;
+  align-items: center;
+  justify-content: center;
+  color: #524b47;
+  font-family: Georgia, "Times New Roman", serif;
   font-size: 13px;
 }
 
-.calendar-row span:nth-child(7n + 1) {
-  color: #b36d6d;
+.calendar .sunday {
+  color: #b47777;
 }
 
-.wedding-day {
-  width: 36px;
-  height: 36px;
+.calendar .saturday {
+  color: #78899c;
+}
+
+.calendar .empty {
+  visibility: hidden;
+}
+
+.calendar-days .wedding-day {
+  width: 43px;
+  height: 43px;
+  min-height: 43px;
   margin: auto;
+  flex-direction: column;
   border-radius: 50%;
-  background: #9e7867;
-  color: white !important;
+  background: #9a7564;
+  color: white;
+  line-height: 1;
+}
+
+.calendar-days .wedding-day b {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.calendar-days .wedding-day small {
+  margin-top: 3px;
+  font-family:
+    "Pretendard",
+    "Apple SD Gothic Neo",
+    sans-serif;
+  font-size: 7px;
+  letter-spacing: 0.2px;
+}
+
+.calendar-caption {
+  margin: 27px 0 0;
+  color: #847b76;
+  font-size: 13px;
 }
 
 /* 갤러리 */
