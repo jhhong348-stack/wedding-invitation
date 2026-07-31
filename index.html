@@ -824,9 +824,6 @@
   <p class="rsvp-description">
     원활한 예식 준비를 위해<br>
     참석 여부를 알려주시면 감사하겠습니다.<br>
-    <span lang="zh-CN">
-      为了更好地准备婚礼，请告知我们您是否出席。
-    </span>
   </p>
 
   <!-- 기존 응답 불러오기 -->
@@ -837,7 +834,7 @@
       id="rsvp-edit-toggle"
       aria-expanded="false"
     >
-      기존 응답 수정하기 / 修改已提交的回复
+      기존 응답 수정하기
       <span aria-hidden="true">+</span>
     </button>
 
@@ -849,7 +846,7 @@
 
       <div class="rsvp-field">
         <label for="rsvp-confirmation-code">
-          접수번호 / 确认编号
+          접수번호
         </label>
 
         <input
@@ -863,7 +860,7 @@
 
       <div class="rsvp-field">
         <label for="rsvp-edit-code">
-          수정 코드 / 修改码
+          수정 코드
         </label>
 
         <input
@@ -880,7 +877,7 @@
         class="rsvp-secondary-button"
         id="rsvp-load-button"
       >
-        기존 응답 불러오기 / 载入回复
+        기존 응답 불러오기
       </button>
 
       <button
@@ -898,7 +895,7 @@
   <form class="rsvp-form" id="rsvp-form" novalidate>
     <div class="rsvp-field">
       <label for="rsvp-name">
-        성함 / 姓名
+        성함
         <span class="required-mark">*</span>
       </label>
 
@@ -914,101 +911,101 @@
 
     <fieldset class="rsvp-fieldset">
       <legend>
-        하객 구분 / 宾客关系
+        하객 구분
         <span class="required-mark">*</span>
       </legend>
 
       <div class="rsvp-choice-grid">
-        <label class="rsvp-choice">
-          <input
-            type="radio"
-            name="guest_side"
-            value="groom"
-            required
-          >
-          <span>신랑측<br><small>新郎方</small></span>
-        </label>
+  <label class="rsvp-choice">
+    <input
+      type="radio"
+      name="guest_side"
+      value="groom"
+      required
+    >
+    <span>신랑측</span>
+  </label>
 
-        <label class="rsvp-choice">
-          <input
-            type="radio"
-            name="guest_side"
-            value="bride"
-          >
-          <span>신부측<br><small>新娘方</small></span>
-        </label>
+  <label class="rsvp-choice">
+    <input
+      type="radio"
+      name="guest_side"
+      value="bride"
+    >
+    <span>신부측</span>
+  </label>
 
-        <label class="rsvp-choice">
-          <input
-            type="radio"
-            name="guest_side"
-            value="both"
-          >
-          <span>양측 모두<br><small>双方朋友</small></span>
-        </label>
-      </div>
+  <label class="rsvp-choice">
+    <input
+      type="radio"
+      name="guest_side"
+      value="both"
+    >
+    <span>양측 모두</span>
+  </label>
+</div>
     </fieldset>
 
     <fieldset class="rsvp-fieldset">
       <legend>
-        참석 여부 / 是否出席
+        참석 여부
         <span class="required-mark">*</span>
       </legend>
 
       <div class="rsvp-choice-grid">
-        <label class="rsvp-choice">
-          <input
-            type="radio"
-            name="attendance"
-            value="attending"
-            required
-          >
-          <span>참석<br><small>出席</small></span>
-        </label>
+  <label class="rsvp-choice">
+    <input
+      type="radio"
+      name="attendance"
+      value="attending"
+      required
+    >
+    <span>참석</span>
+  </label>
 
-        <label class="rsvp-choice">
-          <input
-            type="radio"
-            name="attendance"
-            value="not_attending"
-          >
-          <span>불참<br><small>无法出席</small></span>
-        </label>
+  <label class="rsvp-choice">
+    <input
+      type="radio"
+      name="attendance"
+      value="not_attending"
+    >
+    <span>불참</span>
+  </label>
 
-        <label class="rsvp-choice">
-          <input
-            type="radio"
-            name="attendance"
-            value="undecided"
-          >
-          <span>미정<br><small>尚未确定</small></span>
-        </label>
-      </div>
+  <label class="rsvp-choice">
+    <input
+      type="radio"
+      name="attendance"
+      value="undecided"
+    >
+    <span>미정</span>
+  </label>
+</div>
     </fieldset>
 
     <div class="rsvp-field" id="rsvp-count-field">
       <label for="rsvp-count">
-        총 참석 인원 / 出席总人数
+        총 참석 인원
         <span class="required-mark">*</span>
       </label>
 
       <select id="rsvp-count" name="guest_count">
-        <option value="1">1명 / 1人</option>
-        <option value="2">2명 / 2人</option>
-        <option value="3">3명 / 3人</option>
-        <option value="4">4명 / 4人</option>
-        <option value="5">5명 / 5人</option>
-        <option value="6">6명 / 6人</option>
-        <option value="7">7명 / 7人</option>
-        <option value="8">8명 / 8人</option>
-        <option value="9">9명 / 9人</option>
-        <option value="10">10명 / 10人</option>
-      </select>
+  <option value="1">1명</option>
+  <option value="2">2명</option>
+  <option value="3">3명</option>
+  <option value="4">4명</option>
+  <option value="5">5명</option>
+  <option value="6">6명</option>
+  <option value="7">7명</option>
+  <option value="8">8명</option>
+  <option value="9">9명</option>
+  <option value="10">10명</option>
+</select>
     </div>
 
     <div class="rsvp-field" id="rsvp-companion-field">
       <label for="rsvp-companions">
-        동반인 성함 / 同行人姓名
+        동반인 성함
       </label>
 
       <textarea
@@ -1016,28 +1013,57 @@
         name="companion_names"
         rows="2"
         maxlength="300"
-        placeholder="동반인이 있는 경우 입력해주세요.&#10;如有同行人，请填写姓名。"
+        placeholder="동반인이 있는 경우 입력해주세요."
       ></textarea>
     </div>
 
     <div class="rsvp-field">
-      <label for="rsvp-phone">
-        연락처 / 联系方式
-      </label>
+  <label>
+    연락처
+  </label>
 
-      <input
-        type="tel"
-        id="rsvp-phone"
-        name="phone"
-        maxlength="40"
-        autocomplete="tel"
-        placeholder="한국·프랑스·중국 번호 모두 가능"
-      >
-    </div>
+  <div class="rsvp-phone-grid">
+    <input
+      type="tel"
+      id="rsvp-phone-1"
+      aria-label="연락처 앞자리"
+      inputmode="numeric"
+      maxlength="3"
+      autocomplete="tel-national"
+      placeholder="010"
+    >
+
+    <span class="rsvp-phone-divider" aria-hidden="true">-</span>
+
+    <input
+      type="tel"
+      id="rsvp-phone-2"
+      aria-label="연락처 가운데 자리"
+      inputmode="numeric"
+      maxlength="4"
+      placeholder="1234"
+    >
+
+    <span class="rsvp-phone-divider" aria-hidden="true">-</span>
+
+    <input
+      type="tel"
+      id="rsvp-phone-3"
+      aria-label="연락처 끝자리"
+      inputmode="numeric"
+      maxlength="4"
+      placeholder="5678"
+    >
+  </div>
+
+  <p class="rsvp-phone-guide">
+    연락 가능한 휴대전화 번호를 입력해주세요.
+  </p>
+</div>
 
     <div class="rsvp-field">
       <label for="rsvp-message">
-        전하실 말씀 / 留言
+        전하실 말씀
       </label>
 
       <textarea
@@ -1050,18 +1076,6 @@
       <p class="rsvp-character-count">
         <span id="rsvp-message-count">0</span>/1000
       </p>
-    </div>
-
-    <div class="rsvp-field">
-      <label for="rsvp-language">
-        작성 언어 / 填写语言
-      </label>
-
-      <select id="rsvp-language" name="language">
-        <option value="ko">한국어</option>
-        <option value="zh">中文</option>
-        <option value="en">English</option>
-      </select>
     </div>
 
     <!-- 사람이 볼 필요 없는 봇 방지 입력칸 -->
@@ -1085,10 +1099,7 @@
 
       <span>
         참석 확인과 예식 준비를 위한 개인정보 수집 및 이용에
-        동의합니다.<br>
-        <small lang="zh-CN">
-          同意为婚礼准备及出席确认而收集和使用上述信息。
-        </small>
+        동의합니다.
       </span>
     </label>
 
@@ -1100,11 +1111,11 @@
       id="rsvp-submit-button"
     >
       <span class="rsvp-submit-text">
-        참석 여부 전달하기 / 提交回复
+        참석 여부 전달하기
       </span>
 
       <span class="rsvp-submit-loading" hidden>
-        전송 중... / 提交中...
+        전송 중...
       </span>
     </button>
   </form>
@@ -1126,12 +1137,12 @@
 
     <dl class="rsvp-code-list">
       <div>
-        <dt>접수번호 / 确认编号</dt>
+        <dt>접수번호</dt>
         <dd id="rsvp-result-confirmation"></dd>
       </div>
 
       <div>
-        <dt>수정 코드 / 修改码</dt>
+        <dt>수정 코드</dt>
         <dd id="rsvp-result-edit-code"></dd>
       </div>
     </dl>
@@ -1141,7 +1152,7 @@
       class="rsvp-secondary-button"
       id="rsvp-copy-codes-button"
     >
-      접수정보 복사 / 复制确认信息
+      접수정보 복사
     </button>
 
     <button

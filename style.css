@@ -404,13 +404,6 @@ body {
   line-height: 1.9;
 }
 
-.rsvp-description span {
-  display: block;
-  margin-top: 4px;
-  color: #9b918b;
-  font-size: 11px;
-}
-
 .rsvp-edit-panel {
   margin-bottom: 25px;
   border: 1px solid #e4dcd7;
@@ -561,13 +554,6 @@ body {
     color 0.2s ease;
 }
 
-.rsvp-choice small {
-  margin-top: 3px;
-  color: inherit;
-  font-size: 9px;
-  opacity: 0.75;
-}
-
 .rsvp-choice input:checked + span {
   border-color: #9b7968;
   background: #9b7968;
@@ -598,11 +584,6 @@ body {
   height: 16px;
   margin: 2px 0 0;
   accent-color: #987665;
-}
-
-.rsvp-consent small {
-  color: #948983;
-  font-size: 9px;
 }
 
 .rsvp-submit-button,
@@ -751,6 +732,56 @@ body {
   .rsvp-form {
     padding: 36px 42px;
   }
+}
+
+/* RSVP 연락처 입력 */
+
+.rsvp-phone-grid {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 0.8fr)
+    12px
+    minmax(0, 1fr)
+    12px
+    minmax(0, 1fr);
+  gap: 5px;
+  align-items: center;
+}
+
+.rsvp-phone-grid input {
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 12px 6px;
+  border: 1px solid #dcd2cc;
+  outline: none;
+  background: #fff;
+  color: #4e4743;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  text-align: center;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.rsvp-phone-grid input:focus {
+  border-color: #a98a7a;
+  box-shadow: 0 0 0 2px rgba(169, 138, 122, 0.1);
+}
+
+.rsvp-phone-divider {
+  color: #a69b95;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  text-align: center;
+}
+
+.rsvp-phone-guide {
+  margin: 7px 0 0;
+  color: #a09690;
+  font-size: 9px;
+  line-height: 1.6;
 }
 
 /* 하단 */

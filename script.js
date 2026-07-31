@@ -631,14 +631,30 @@ function fillRsvpForm(data) {
   document.getElementById("rsvp-companions").value =
     data.companion_names || "";
 
-  document.getElementById("rsvp-phone").value =
-    data.phone || "";
+  const savedPhone = (data.phone || "").replace(/\D/g, "");
+
+const phonePart1 = document.getElementById("rsvp-phone-1");
+const phonePart2 = document.getElementById("rsvp-phone-2");
+const phonePart3 = document.getElementById("rsvp-phone-3");
+
+if (savedPhone.length >= 10) {
+  if (savedPhone.length === 10) {
+    phonePart1.value = savedPhone.slice(0, 3);
+    phonePart2.value = savedPhone.slice(3, 6);
+    phonePart3.value = savedPhone.slice(6, 10);
+  } else {
+    phonePart1.value = savedPhone.slice(0, 3);
+    phonePart2.value = savedPhone.slice(3, 7);
+    phonePart3.value = savedPhone.slice(7, 11);
+  }
+} else {
+  phonePart1.value = "";
+  phonePart2.value = "";
+  phonePart3.value = "";
+}
 
   document.getElementById("rsvp-message").value =
     data.message || "";
-
-  document.getElementById("rsvp-language").value =
-    data.language || "ko";
 
   if (rsvpMessageCount) {
     rsvpMessageCount.textContent = String(
@@ -723,7 +739,7 @@ async function loadExistingRsvp(credentials) {
     if (rsvpLoadButton) {
       rsvpLoadButton.disabled = false;
       rsvpLoadButton.textContent =
-        "기존 응답 불러오기 / 载入回复";
+  "기존 응답 불러오기";
     }
   }
 }
@@ -742,6 +758,45 @@ rsvpLoadSavedButton?.addEventListener("click", () => {
     loadExistingRsvp(savedCredentials);
   }
 });
+
+function getRsvpPhoneNumber() {
+  const phonePart1 =
+    document.getElementById("rsvp-phone-1")
+      ?.value
+      .replace(/\D/g, "") || "";
+
+  const phonePart2 =
+    document.getElementById("rsvp-phone-2")
+      ?.value
+      .replace(/\D/g, "") || "";
+
+  const phonePart3 =
+    document.getElementById("rsvp-phone-3")
+      ?.value
+      .replace(/\D/g, "") || "";
+
+  /*
+    세 칸이 전부 비어 있으면 연락처를 선택 입력으로 처리합니다.
+  */
+  if (!phonePart1 && !phonePart2 && !phonePart3) {
+    return null;
+  }
+
+  /*
+    일부만 입력한 경우 제출할 수 없도록 합니다.
+  */
+  if (
+    phonePart1.length !== 3 ||
+    ![3, 4].includes(phonePart2.length) ||
+    phonePart3.length !== 4
+  ) {
+    throw new Error(
+      "연락처를 정확히 입력해주세요."
+    );
+  }
+
+  return `${phonePart1}-${phonePart2}-${phonePart3}`;
+}
 
 
 /* -------------------------------
@@ -807,6 +862,15 @@ rsvpForm?.addEventListener("submit", async (event) => {
     currentRsvpCredentials ||
     getSavedRsvpCredentials();
 
+    let phoneNumber = null;
+
+try {
+  phoneNumber = getRsvpPhoneNumber();
+} catch (error) {
+  showRsvpError(error.message);
+  return;
+}
+
   const payload = {
     p_guest_name: guestName,
     p_guest_side: guestSide,
@@ -816,16 +880,13 @@ rsvpForm?.addEventListener("submit", async (event) => {
 
     p_companion_names: companionNames,
 
-    p_phone:
-      document.getElementById("rsvp-phone").value.trim()
-      || null,
+    p_phone: getRsvpPhoneNumber(),
 
     p_message:
       document.getElementById("rsvp-message").value.trim()
       || null,
 
-    p_language:
-      document.getElementById("rsvp-language").value,
+    p_language: "ko",
 
     p_confirmation_code:
       savedCredentials?.confirmationCode || null,
@@ -921,3 +982,37 @@ if (initialSavedCredentials && rsvpLoadSavedButton) {
 }
 
 updateAttendanceFields();
+
+const rsvpPhoneInputs = document.querySelectorAll(
+  ".rsvp-phone-grid input"
+);
+
+rsvpPhoneInputs.forEach((input, index) => {
+  input.addEventListener("input", () => {
+    input.value = input.value.replace(/\D/g, "");
+
+    /*
+      입력 가능한 자릿수를 채우면 다음 칸으로 자동 이동합니다.
+    */
+    if (
+      input.value.length === input.maxLength &&
+      index < rsvpPhoneInputs.length - 1
+    ) {
+      rsvpPhoneInputs[index + 1].focus();
+    }
+  });
+
+  input.addEventListener("keydown", (event) => {
+    /*
+      현재 칸이 비어 있는 상태에서 Backspace를 누르면
+      앞 칸으로 이동합니다.
+    */
+    if (
+      event.key === "Backspace" &&
+      input.value.length === 0 &&
+      index > 0
+    ) {
+      rsvpPhoneInputs[index - 1].focus();
+    }
+  });
+});
