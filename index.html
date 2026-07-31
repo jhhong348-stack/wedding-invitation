@@ -361,37 +361,187 @@
 </section>
 
     <!-- 오시는 길 -->
-    <section class="section location">
-      <p class="section-label">LOCATION</p>
-      <h2>오시는 길</h2>
+    <section class="section location-section" id="location">
+  <p class="section-label">LOCATION</p>
+  <h2>오시는 길</h2>
 
-      <p class="venue-name">루나미엘레 컨벤션홀</p>
+  <div class="location-venue">
+    <strong>루나미엘레 컨벤션홀</strong>
+    <p>서울특별시 영등포구 여의공원로 101</p>
+    <p>CCMM빌딩 12층</p>
+  </div>
 
-      <p class="address">
-        서울특별시 영등포구 여의도동<br>
-        CCMM빌딩 12층
-      </p>
+  <button
+    type="button"
+    class="address-copy-button"
+    id="address-copy-button"
+    data-address="서울특별시 영등포구 여의공원로 101 CCMM빌딩 12층"
+  >
+    주소 복사
+  </button>
 
-      <div class="button-group">
-        <a
-          href="https://map.naver.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button"
-        >
-          네이버 지도
-        </a>
+  <!-- Google Maps -->
+  <div class="google-map-wrapper">
+    <iframe
+      src="https://www.google.com/maps?q=%EB%A3%A8%EB%82%98%EB%AF%B8%EC%97%98%EB%A0%88%20%EC%84%9C%EC%9A%B8%20%EC%98%81%EB%93%B1%ED%8F%AC%EA%B5%AC%20%EC%97%AC%EC%9D%98%EA%B3%B5%EC%9B%90%EB%A1%9C%20101&output=embed"
+      title="루나미엘레 위치 지도"
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      allowfullscreen
+    ></iframe>
+  </div>
 
-        <a
-          href="https://map.kakao.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button secondary"
-        >
-          카카오맵
-        </a>
+  <!-- 지도 서비스 버튼 -->
+  <div class="map-link-grid">
+    <a
+      href="https://map.naver.com/p/search/%EB%A3%A8%EB%82%98%EB%AF%B8%EC%97%98%EB%A0%88"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="map-link-button"
+    >
+      <span class="map-service-name">NAVER</span>
+      <span>네이버지도</span>
+    </a>
+
+    <a
+      href="https://map.kakao.com/link/search/%EB%A3%A8%EB%82%98%EB%AF%B8%EC%97%98%EB%A0%88"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="map-link-button"
+    >
+      <span class="map-service-name">KAKAO</span>
+      <span>카카오맵</span>
+    </a>
+
+    <a
+      href="https://www.google.com/maps/search/?api=1&query=%EB%A3%A8%EB%82%98%EB%AF%B8%EC%97%98%EB%A0%88%20%EC%84%9C%EC%9A%B8%20%EC%98%81%EB%93%B1%ED%8F%AC%EA%B5%AC%20%EC%97%AC%EC%9D%98%EA%B3%B5%EC%9B%90%EB%A1%9C%20101"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="map-link-button map-link-google"
+    >
+      <span class="map-service-name">GOOGLE</span>
+      <span>구글지도</span>
+    </a>
+  </div>
+
+  <!-- 공식 약도 -->
+  <div class="official-map-block">
+    <div class="location-subheading">
+      <span>OFFICIAL MAP</span>
+      <h3>공식 약도</h3>
+    </div>
+
+    <button
+      type="button"
+      class="official-map-button"
+      id="official-map-button"
+      aria-label="루나미엘레 공식 약도 크게 보기"
+    >
+      <img
+        src="images/location-map.webp"
+        alt="루나미엘레 공식 약도와 교통 및 주차 안내"
+        loading="lazy"
+      >
+    </button>
+
+    <p class="map-expand-guide">
+      약도를 누르면 크게 볼 수 있습니다.
+    </p>
+  </div>
+
+  <!-- 교통 안내 -->
+  <div class="transport-guide">
+    <div class="location-subheading">
+      <span>TRANSPORTATION</span>
+      <h3>교통 안내</h3>
+    </div>
+
+    <article class="transport-item">
+      <div class="transport-icon" aria-hidden="true">S</div>
+
+      <div class="transport-content">
+        <h4>셔틀버스</h4>
+        <p>
+          여의도역 3번 출구에서<br>
+          루나미엘레 셔틀버스를 이용하실 수 있습니다.
+        </p>
       </div>
-    </section>
+    </article>
+
+    <article class="transport-item">
+      <div class="transport-icon" aria-hidden="true">M</div>
+
+      <div class="transport-content">
+        <h4>지하철</h4>
+
+        <p>
+          <strong>5호선 여의나루역</strong><br>
+          1번 출구 하차 후 도보 약 10분
+        </p>
+
+        <p>
+          <strong>9호선 국회의사당역</strong><br>
+          3번 출구 하차 후 도보 약 6분
+        </p>
+      </div>
+    </article>
+
+    <article class="transport-item">
+      <div class="transport-icon" aria-hidden="true">B</div>
+
+      <div class="transport-content">
+        <h4>버스</h4>
+
+        <p>
+          <strong>여의도공원 환승센터 하차</strong><br>
+          여의도공원 건너편 CCMM빌딩
+        </p>
+
+        <p>
+          <strong>여의도 순복음교회 하차</strong><br>
+          여의도공원 방향으로 약 200m
+        </p>
+      </div>
+    </article>
+
+    <article class="transport-item">
+      <div class="transport-icon" aria-hidden="true">P</div>
+
+      <div class="transport-content">
+        <h4>주차</h4>
+        <p>
+          하객 3시간 무료주차<br>
+          혼주 6시간 무료주차, 6대
+        </p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<div
+  class="map-modal"
+  id="map-modal"
+  aria-hidden="true"
+  role="dialog"
+  aria-modal="true"
+  aria-label="루나미엘레 공식 약도"
+>
+  <button
+    type="button"
+    class="map-modal-close"
+    id="map-modal-close"
+    aria-label="약도 닫기"
+  >
+    ×
+  </button>
+
+  <div class="map-modal-content">
+    <img
+      src="images/location-map.webp"
+      alt="확대된 루나미엘레 공식 약도"
+    >
+  </div>
+</div>
 
     <!-- 연락처 -->
     <section class="section contact">

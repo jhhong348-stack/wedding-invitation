@@ -624,3 +624,315 @@ footer p {
     opacity: 0.75;
   }
 }
+
+/* ================================
+   LOCATION
+================================ */
+
+.location-section {
+  overflow: hidden;
+}
+
+.location-venue {
+  margin: 25px 0 16px;
+  color: #69605b;
+  line-height: 1.75;
+}
+
+.location-venue strong {
+  display: block;
+  margin-bottom: 5px;
+  color: #443d39;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.location-venue p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.address-copy-button {
+  margin: 0 auto 28px;
+  padding: 10px 22px;
+  border: 1px solid #cdbeb5;
+  border-radius: 30px;
+  background: transparent;
+  color: #655b55;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.address-copy-button:hover {
+  border-color: #997867;
+  background: #997867;
+  color: #fff;
+}
+
+/* Google Maps */
+
+.google-map-wrapper {
+  position: relative;
+  width: 100%;
+  height: 290px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: #eee8e4;
+}
+
+.google-map-wrapper iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* 지도 서비스 버튼 */
+
+.map-link-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.map-link-button {
+  display: flex;
+  min-width: 0;
+  min-height: 64px;
+  padding: 10px 5px;
+  border: 1px solid #ded4ce;
+  background: #fff;
+  color: #5f5651;
+  text-decoration: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.2s ease;
+}
+
+.map-link-button:hover {
+  border-color: #bca99e;
+  background: #faf7f5;
+  transform: translateY(-1px);
+}
+
+.map-service-name {
+  display: block;
+  margin-bottom: 5px;
+  color: #a68878;
+  font-family: Arial, sans-serif;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+.map-link-button > span:last-child {
+  font-size: 12px;
+}
+
+/* 공식 약도 */
+
+.official-map-block {
+  margin-top: 65px;
+}
+
+.location-subheading {
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.location-subheading span {
+  display: block;
+  margin-bottom: 8px;
+  color: #b09584;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.location-subheading h3 {
+  margin: 0;
+  color: #514843;
+  font-size: 19px;
+  font-weight: 400;
+}
+
+.official-map-button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #e5ddd8;
+  background: #fff;
+  cursor: zoom-in;
+}
+
+.official-map-button img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.4s ease;
+}
+
+.official-map-button:hover img {
+  transform: scale(1.01);
+}
+
+.map-expand-guide {
+  margin: 12px 0 0;
+  color: #9a908a;
+  font-size: 11px;
+}
+
+/* 교통 안내 */
+
+.transport-guide {
+  margin-top: 65px;
+  text-align: left;
+}
+
+.transport-item {
+  display: grid;
+  grid-template-columns: 45px minmax(0, 1fr);
+  gap: 16px;
+  padding: 25px 0;
+  border-bottom: 1px solid #e8e1dc;
+}
+
+.transport-item:first-of-type {
+  border-top: 1px solid #e8e1dc;
+}
+
+.transport-icon {
+  display: flex;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #c8b5a9;
+  border-radius: 50%;
+  color: #9b7967;
+  font-family: Georgia, serif;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+}
+
+.transport-content h4 {
+  margin: 0 0 11px;
+  color: #514843;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.transport-content p {
+  margin: 0 0 13px;
+  color: #746b66;
+  font-size: 12px;
+  line-height: 1.75;
+}
+
+.transport-content p:last-child {
+  margin-bottom: 0;
+}
+
+.transport-content strong {
+  color: #5b514c;
+  font-weight: 500;
+}
+
+/* 공식 약도 확대 모달 */
+
+.map-modal {
+  position: fixed;
+  z-index: 10000;
+  inset: 0;
+  display: none;
+  padding: 55px 12px 20px;
+  overflow: auto;
+  background: rgba(18, 16, 15, 0.96);
+  align-items: flex-start;
+  justify-content: center;
+  overscroll-behavior: contain;
+}
+
+.map-modal.is-open {
+  display: flex;
+}
+
+.map-modal-content {
+  width: min(100%, 760px);
+  margin: auto;
+}
+
+.map-modal-content img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #fff;
+}
+
+.map-modal-close {
+  position: fixed;
+  z-index: 1;
+  top: 10px;
+  right: 14px;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 34px;
+  font-weight: 200;
+  line-height: 42px;
+  cursor: pointer;
+}
+
+body.map-modal-open {
+  overflow: hidden;
+}
+
+/* 작은 모바일 화면 */
+
+@media (max-width: 380px) {
+  .map-link-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .map-link-button {
+    min-height: 52px;
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .map-service-name {
+    margin: 0;
+  }
+}
+
+/* 넓은 화면 */
+
+@media (min-width: 700px) {
+  .google-map-wrapper {
+    height: 350px;
+  }
+
+  .official-map-button {
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  .transport-guide {
+    max-width: 620px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
