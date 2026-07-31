@@ -357,3 +357,38 @@ footer p {
     height: 270px;
   }
 }
+/* 초대 문구 */
+.invitation-message {
+  color: #5d5651;
+}
+
+.family-list {
+  margin-top: 45px;
+  padding-top: 30px;
+  border-top: 1px solid #e8dfd8;
+}
+
+.family-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+  margin: 13px 0;
+  font-size: 14px;
+}
+
+.family-row .parents {
+  color: #5e5752;
+}
+
+.family-row .relation {
+  color: #9a918b;
+  font-size: 13px;
+}
+
+.family-row strong {
+  min-width: 34px;
+  color: #3f3935;
+  font-size: 16px;
+  font-weight: 600;
+}
