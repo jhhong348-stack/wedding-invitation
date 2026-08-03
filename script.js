@@ -1262,3 +1262,92 @@ if (document.readyState === "loading") {
 } else {
   updateWeddingDday();
 }
+
+/* ========================================
+   Scroll Reveal
+======================================== */
+
+const revealElements =
+    document.querySelectorAll(".reveal");
+
+const revealObserver =
+    new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+
+                entry.target.classList.add("show");
+
+                revealObserver.unobserve(entry.target);
+            });
+        },
+        {
+            threshold: 0.15
+        }
+    );
+
+revealElements.forEach((element) => {
+    revealObserver.observe(element);
+});
+
+/* ========================================
+   SCROLL TO TOP
+======================================== */
+
+const scrollTopButton = document.getElementById(
+  "scroll-top-button"
+);
+
+function updateScrollTopButton() {
+  if (!scrollTopButton) {
+    return;
+  }
+
+  /*
+    약 600px 이상 내려갔을 때 버튼을 표시합니다.
+  */
+  const shouldShow = window.scrollY > 600;
+
+  scrollTopButton.classList.toggle(
+    "is-visible",
+    shouldShow
+  );
+}
+
+scrollTopButton?.addEventListener("click", () => {
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  window.scrollTo({
+    top: 0,
+    behavior: reduceMotion ? "auto" : "smooth"
+  });
+});
+
+/*
+  스크롤 이벤트가 지나치게 많이 실행되지 않도록
+  requestAnimationFrame으로 화면 갱신 시점에 맞춥니다.
+*/
+let scrollTopTicking = false;
+
+window.addEventListener(
+  "scroll",
+  () => {
+    if (scrollTopTicking) {
+      return;
+    }
+
+    scrollTopTicking = true;
+
+    window.requestAnimationFrame(() => {
+      updateScrollTopButton();
+      scrollTopTicking = false;
+    });
+  },
+  {
+    passive: true
+  }
+);
+
+updateScrollTopButton();

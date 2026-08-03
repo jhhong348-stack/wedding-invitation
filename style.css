@@ -2214,3 +2214,84 @@ button:disabled {
     transform: none !important;
   }
 }
+
+/* ========================================
+   SCROLL TO TOP BUTTON
+======================================== */
+
+.scroll-top-button {
+  position: fixed;
+  z-index: 9000;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: calc(20px + env(safe-area-inset-bottom));
+
+  display: flex;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+
+  border: 1px solid rgba(116, 91, 78, 0.22);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 5px 18px rgba(62, 48, 41, 0.12);
+
+  color: #765f53;
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  pointer-events: none;
+
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s ease,
+    transform 0.25s ease,
+    background-color 0.2s ease;
+}
+
+.scroll-top-button.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.scroll-top-button:active {
+  transform: scale(0.94);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .scroll-top-button:hover {
+    background: #fff;
+    transform: translateY(-2px);
+  }
+
+  .scroll-top-button.is-visible:active {
+    transform: scale(0.94);
+  }
+}
+
+@media (max-width: 480px) {
+  .scroll-top-button {
+    right: max(14px, env(safe-area-inset-right));
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    width: 43px;
+    height: 43px;
+    font-size: 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-top-button {
+    transition: none;
+  }
+}
