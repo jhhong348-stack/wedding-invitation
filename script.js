@@ -1045,7 +1045,7 @@ function isMobileDevice() {
 
 shareButton?.addEventListener("click", async () => {
   const pageUrl =
-    "https://jhhong348-stack.github.io/wedding-invitation/";
+    "https://jaehoetsihan.com/";
 
   const shareData = {
     title: "홍재호 · 장시한 결혼식에 초대합니다",

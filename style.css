@@ -3067,3 +3067,21 @@ body {
 .invitation {
   touch-action: pan-y;
 }
+
+/* ========================================
+   DISABLE AUTO-DETECTED PHONE LINKS
+======================================== */
+
+.account-number,
+.account-number a,
+.account-card a[x-apple-data-detectors] {
+  color: inherit !important;
+  font: inherit !important;
+  text-decoration: none !important;
+  cursor: default !important;
+}
+
+a[x-apple-data-detectors] {
+  color: inherit !important;
+  text-decoration: none !important;
+}
