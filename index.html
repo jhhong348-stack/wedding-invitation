@@ -66,10 +66,13 @@
     <!-- 첫 화면 -->
     <section class="hero">
       <img
-        src="images/main.jpg"
-        alt="신랑 신부 메인 사진"
-        class="hero-image"
-      >
+  src="images/main.jpg"
+  alt="신랑 홍재호와 신부 장시한"
+  class="hero-image"
+  loading="eager"
+  fetchpriority="high"
+  decoding="async"
+>
 
       <div class="hero-text">
         <p class="small-title">WE ARE GETTING MARRIED</p>
@@ -77,7 +80,7 @@
         <h1>
   <span data-config="couple.groom.name">홍재호</span>
   <span>&</span>
-  <span data-config="couple.bride.name">장사한</span>
+  <span data-config="couple.bride.name">장시한</span>
 </h1>
 
         <p
@@ -278,6 +281,7 @@
         src="images/gallery01.jpg"
         alt="신랑 신부 웨딩 사진 1"
         loading="lazy"
+        decoding="async"
       >
     </a>
 
@@ -290,6 +294,7 @@
         src="images/gallery02.jpg"
         alt="신랑 신부 웨딩 사진 2"
         loading="lazy"
+        decoding="async"
       >
     </a>
 
@@ -302,6 +307,7 @@
         src="images/gallery03.jpg"
         alt="신랑 신부 웨딩 사진 3"
         loading="lazy"
+        decoding="async"
       >
     </a>
 
@@ -314,6 +320,7 @@
         src="images/gallery04.jpg"
         alt="신랑 신부 웨딩 사진 4"
         loading="lazy"
+        decoding="async"
       >
     </a>
 
@@ -326,6 +333,7 @@
         src="images/gallery05.jpg"
         alt="신랑 신부 웨딩 사진 5"
         loading="lazy"
+        decoding="async"
       >
     </a>
 
@@ -338,6 +346,7 @@
         src="images/gallery06.jpg"
         alt="신랑 신부 웨딩 사진 6"
         loading="lazy"
+        decoding="async"
       >
     </a>
 
@@ -350,6 +359,7 @@
         src="images/gallery07.jpg"
         alt="신랑 신부 웨딩 사진 7"
         loading="lazy"
+        decoding="async"
       >
     </a>
 
@@ -362,6 +372,7 @@
         src="images/gallery08.jpg"
         alt="신랑 신부 웨딩 사진 8"
         loading="lazy"
+        decoding="async"
       >
     </a>
 
@@ -374,6 +385,7 @@
         src="images/gallery09.jpg"
         alt="신랑 신부 웨딩 사진 9"
         loading="lazy"
+        decoding="async"
       >
     </a>
 
@@ -386,6 +398,7 @@
         src="images/gallery10.jpg"
         alt="신랑 신부 웨딩 사진 10"
         loading="lazy"
+        decoding="async"
       >
     </a>
 
@@ -398,6 +411,7 @@
         src="images/gallery11.jpg"
         alt="신랑 신부 웨딩 사진 11"
         loading="lazy"
+        decoding="async"
       >
     </a>
 
@@ -410,6 +424,7 @@
         src="images/gallery12.jpg"
         alt="신랑 신부 웨딩 사진 12"
         loading="lazy"
+        decoding="async"
       >
     </a>
 
@@ -422,6 +437,7 @@
         src="images/gallery13.jpg"
         alt="신랑 신부 웨딩 사진 13"
         loading="lazy"
+        decoding="async"
       >
     </a>
 
@@ -513,6 +529,7 @@
         src="images/location-map.webp"
         alt="루나미엘레 공식 약도와 교통 및 주차 안내"
         loading="lazy"
+        decoding="async"
       >
     </button>
 
@@ -1280,11 +1297,14 @@
   </div>
 
   <script src="script.js"></script>
-<script type="module">
+
+  <script type="module">
   import PhotoSwipeLightbox
     from "https://cdn.jsdelivr.net/npm/photoswipe@5/dist/photoswipe-lightbox.esm.js";
 
-  const galleryElement = document.getElementById("wedding-gallery");
+  const galleryElement = document.getElementById(
+    "wedding-gallery"
+  );
 
   function getImageSize(src) {
     return new Promise((resolve, reject) => {
@@ -1298,7 +1318,9 @@
       };
 
       image.onerror = () => {
-        reject(new Error(`이미지를 불러올 수 없습니다: ${src}`));
+        reject(
+          new Error(`이미지를 불러올 수 없습니다: ${src}`)
+        );
       };
 
       image.src = src;
@@ -1310,45 +1332,52 @@
       ...galleryElement.querySelectorAll(".gallery-item")
     ];
 
-    let galleryDataPromise = null;
+    const imageSizeCache = new Map();
 
-    function prepareGalleryData() {
-      if (!galleryDataPromise) {
-        galleryDataPromise = Promise.all(
-          galleryLinks.map(async (link) => {
-            const thumbnail = link.querySelector("img");
-            const size = await getImageSize(link.href);
-
-            return {
-              src: link.href,
-              width: size.width,
-              height: size.height,
-              alt: thumbnail?.alt || ""
-            };
-          })
-        );
+    async function getCachedImageSize(src) {
+      if (imageSizeCache.has(src)) {
+        return imageSizeCache.get(src);
       }
 
-      return galleryDataPromise;
+      const sizePromise = getImageSize(src);
+      imageSizeCache.set(src, sizePromise);
+
+      try {
+        return await sizePromise;
+      } catch (error) {
+        imageSizeCache.delete(src);
+        throw error;
+      }
     }
 
-    /*
-      페이지가 열린 뒤 브라우저가 한가할 때
-      이미지 크기를 미리 확인합니다.
-    */
-    if ("requestIdleCallback" in window) {
-      requestIdleCallback(() => {
-        prepareGalleryData().catch(console.error);
-      });
-    } else {
-      setTimeout(() => {
-        prepareGalleryData().catch(console.error);
-      }, 1500);
+    async function prepareGalleryData() {
+      return Promise.all(
+        galleryLinks.map(async (link) => {
+          const thumbnail = link.querySelector("img");
+          const size = await getCachedImageSize(link.href);
+
+          return {
+            src: link.href,
+            width: size.width,
+            height: size.height,
+            alt: thumbnail?.alt || ""
+          };
+        })
+      );
     }
+
+    let openingGallery = false;
 
     galleryLinks.forEach((link, clickedIndex) => {
       link.addEventListener("click", async (event) => {
         event.preventDefault();
+
+        if (openingGallery) {
+          return;
+        }
+
+        openingGallery = true;
+        galleryElement.classList.add("is-loading-photo");
 
         try {
           const galleryData = await prepareGalleryData();
@@ -1379,8 +1408,13 @@
           lightbox.loadAndOpen(clickedIndex);
         } catch (error) {
           console.error(error);
-
           window.open(link.href, "_blank");
+        } finally {
+          openingGallery = false;
+
+          galleryElement.classList.remove(
+            "is-loading-photo"
+          );
         }
       });
     });
