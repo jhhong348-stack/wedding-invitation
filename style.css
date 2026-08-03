@@ -2660,3 +2660,220 @@ button:disabled {
     font-size: 11px;
   }
 }
+
+/* ========================================
+   FINAL MOBILE UX STABILITY
+======================================== */
+
+/*
+  긴 텍스트나 요소 때문에 페이지 전체에
+  가로 스크롤이 생기는 것을 방지합니다.
+*/
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  overscroll-behavior-x: none;
+}
+
+/*
+  모든 요소의 너비 계산을 안정적으로 맞춥니다.
+*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/*
+  이미지와 iframe이 부모 영역보다 넓어지지 않게 합니다.
+*/
+img,
+iframe {
+  max-width: 100%;
+}
+
+/*
+  긴 영문 주소, 접수번호, 수정 코드가
+  화면 밖으로 튀어나가지 않게 합니다.
+*/
+.rsvp-code-item dd,
+.account-number,
+.location-venue,
+.footer-message,
+.rsvp-result-description,
+.rsvp-save-notice,
+.transport-content,
+.contact-description,
+.account-description {
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+
+/*
+  접수번호와 수정 코드는 영문·숫자가 길기 때문에
+  필요한 경우 글자 사이에서도 줄바꿈을 허용합니다.
+*/
+.rsvp-code-item dd {
+  word-break: break-all;
+}
+
+/*
+  iPhone Safari는 입력 글자가 16px보다 작으면
+  입력칸을 누를 때 화면을 자동 확대할 수 있습니다.
+*/
+@media (max-width: 768px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+/*
+  입력 요소의 모바일 기본 모양 차이를 줄입니다.
+*/
+input,
+select,
+textarea,
+button {
+  font-family: inherit;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  max-width: 100%;
+  border-radius: 0;
+}
+
+/*
+  iOS에서 버튼과 select가 지나치게 기본 스타일로
+  표시되는 현상을 줄입니다.
+*/
+button,
+input,
+select,
+textarea {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/*
+  체크박스·라디오 버튼은 기존 기본 모양 또는
+  프로젝트의 별도 CSS를 유지해야 하므로 복원합니다.
+*/
+input[type="checkbox"],
+input[type="radio"] {
+  width: auto;
+  -webkit-appearance: auto;
+  appearance: auto;
+}
+
+/*
+  모바일 터치 중 실수로 텍스트가 선택되는 것을 줄입니다.
+*/
+button,
+.map-link-button,
+.contact-action-button,
+.gallery-item,
+.official-map-button {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/*
+  복사해야 하는 정보는 선택 가능하도록 유지합니다.
+*/
+.account-number,
+.rsvp-code-item dd {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/*
+  아이폰 하단 홈바를 고려해 마지막 화면의 여백을 확보합니다.
+*/
+.wedding-footer {
+  padding-bottom:
+    calc(42px + env(safe-area-inset-bottom));
+}
+
+/*
+  오른쪽 아래 고정 버튼이 아이폰 홈바나 화면 가장자리와
+  겹치지 않도록 안전 영역을 반영합니다.
+*/
+.scroll-top-button {
+  right: max(14px, env(safe-area-inset-right));
+  bottom:
+    calc(16px + env(safe-area-inset-bottom));
+}
+
+/*
+  모바일에서 긴 문장이 너무 촘촘해지지 않도록
+  좌우 여백을 안정적으로 유지합니다.
+*/
+@media (max-width: 480px) {
+  .section {
+    padding-right: 22px;
+    padding-left: 22px;
+  }
+
+  .hero-text {
+    width: calc(100% - 36px);
+    max-width: 100%;
+  }
+
+  .hero-text h1 {
+    white-space: nowrap;
+  }
+
+  .wedding-date,
+  .wedding-place {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .rsvp-code-item {
+    grid-template-columns: 78px minmax(0, 1fr);
+    column-gap: 10px;
+  }
+
+  .rsvp-code-item dd {
+    font-size: 14px;
+    letter-spacing: 0.6px;
+  }
+}
+
+/*
+  아주 작은 화면에서는 이름이 화면 밖으로 나가지 않게
+  글자 크기를 조금 줄입니다.
+*/
+@media (max-width: 360px) {
+  .hero-text h1 {
+    font-size: clamp(28px, 10vw, 38px);
+  }
+
+  .wedding-date {
+    font-size: 12px;
+  }
+
+  .wedding-place {
+    font-size: 11px;
+  }
+
+  .section {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+}
