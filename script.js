@@ -1094,9 +1094,6 @@ shareButton?.addEventListener("click", async () => {
 ================================ */
 
 function initializeScrollReveal() {
-  /*
-    첫 화면 Hero는 즉시 보여야 하므로 제외합니다.
-  */
   const revealElements = document.querySelectorAll(
     ".section, .wedding-footer"
   );
@@ -1109,13 +1106,11 @@ function initializeScrollReveal() {
     element.classList.add("scroll-reveal");
   });
 
-  /*
-    JavaScript가 실행됐을 때만 CSS 숨김 상태를 활성화합니다.
-  */
   document.documentElement.classList.add("reveal-ready");
 
   /*
-    오래된 브라우저에서는 애니메이션 없이 모두 표시합니다.
+    IntersectionObserver를 지원하지 않는 환경에서는
+    모든 섹션을 즉시 표시합니다.
   */
   if (!("IntersectionObserver" in window)) {
     revealElements.forEach((element) => {
@@ -1133,22 +1128,43 @@ function initializeScrollReveal() {
         }
 
         entry.target.classList.add("is-visible");
-
-        /*
-          한 번 나타난 요소는 다시 숨기지 않습니다.
-        */
         observer.unobserve(entry.target);
       });
     },
     {
-      threshold: 0.12,
-      rootMargin: "0px 0px -45px 0px"
+      /*
+        섹션이 아주 조금이라도 화면에 들어오면 표시합니다.
+        긴 갤러리·지도·RSVP 섹션도 정상 작동합니다.
+      */
+      threshold: 0,
+      rootMargin: "0px 0px 120px 0px"
     }
   );
 
   revealElements.forEach((element) => {
     revealObserver.observe(element);
   });
+
+  /*
+    브라우저 오류나 관찰 누락이 발생해도
+    콘텐츠가 계속 숨겨져 있지 않도록 하는 안전장치입니다.
+  */
+  window.setTimeout(() => {
+    revealElements.forEach((element) => {
+      const rect = element.getBoundingClientRect();
+
+      if (rect.top < window.innerHeight + 200) {
+        element.classList.add("is-visible");
+      }
+    });
+  }, 500);
 }
 
-initializeScrollReveal();
+if (document.readyState === "loading") {
+  document.addEventListener(
+    "DOMContentLoaded",
+    initializeScrollReveal
+  );
+} else {
+  initializeScrollReveal();
+}

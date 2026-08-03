@@ -1853,3 +1853,21 @@ body.map-modal-open {
     animation: none !important;
   }
 }
+
+/*
+  스크롤 애니메이션 적용 전에는
+  모든 콘텐츠가 기본적으로 표시됩니다.
+*/
+.scroll-reveal {
+  visibility: visible;
+}
+
+/*
+  표시된 섹션은 클릭도 정상적으로 가능하게 합니다.
+*/
+.reveal-ready .scroll-reveal.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
