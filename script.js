@@ -1016,3 +1016,75 @@ rsvpPhoneInputs.forEach((input, index) => {
     }
   });
 });
+
+/* ================================
+   청첩장 공유
+================================ */
+
+const shareButton = document.getElementById("share-button");
+
+function isMobileDevice() {
+  const mobileUserAgent =
+    /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  /*
+    iPadOS는 데스크톱처럼 표시되는 경우가 있어
+    터치 포인트도 함께 확인합니다.
+  */
+  const isIPadOS =
+    navigator.platform === "MacIntel" &&
+    navigator.maxTouchPoints > 1;
+
+  return mobileUserAgent || isIPadOS;
+}
+
+shareButton?.addEventListener("click", async () => {
+  const pageUrl =
+    "https://jhhong348-stack.github.io/wedding-invitation/";
+
+  const shareData = {
+    title: "홍재호 · 장사한 결혼식에 초대합니다",
+    text: "2026년 10월 10일 토요일 오후 12시, 루나미엘레",
+    url: pageUrl
+  };
+
+  /*
+    모바일 기기이면서 Web Share API가 실제로
+    해당 데이터를 공유할 수 있을 때만 공유창을 엽니다.
+  */
+  const canUseNativeShare =
+    isMobileDevice() &&
+    typeof navigator.share === "function" &&
+    (
+      typeof navigator.canShare !== "function" ||
+      navigator.canShare(shareData)
+    );
+
+  if (canUseNativeShare) {
+    try {
+      await navigator.share(shareData);
+      return;
+    } catch (error) {
+      if (error.name === "AbortError") {
+        return;
+      }
+
+      console.error("공유창 실행 실패:", error);
+    }
+  }
+
+  /*
+    PC 또는 공유창 실행 실패 시 주소 복사
+  */
+  try {
+    await copyText(pageUrl);
+    showCopyToast("청첩장 주소가 복사되었습니다.");
+  } catch (error) {
+    console.error("주소 복사 실패:", error);
+
+    window.prompt(
+      "아래 청첩장 주소를 복사해주세요.",
+      pageUrl
+    );
+  }
+});
