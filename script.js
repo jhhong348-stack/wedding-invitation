@@ -1436,7 +1436,7 @@ prefersReducedMotion.addEventListener?.(
 updateHeroParallax();
 
 /* ========================================
-   WEDDING BGM — BASIC PLAYBACK
+   WEDDING BGM — GLASS BUTTON + FADE
 ======================================== */
 
 const weddingBgm = document.getElementById(
@@ -1455,7 +1455,18 @@ const bgmPauseIcon = bgmButton?.querySelector(
   ".bgm-pause-icon"
 );
 
-function updateBgmBasicButton(isPlaying) {
+/*
+  청첩장 BGM은 너무 앞에 나오지 않도록
+  최대 볼륨을 낮게 설정합니다.
+*/
+const BGM_TARGET_VOLUME = 0.2;
+const BGM_FADE_IN_DURATION = 1100;
+const BGM_FADE_OUT_DURATION = 750;
+
+let bgmFadeFrame = null;
+let bgmFadeToken = 0;
+
+function updateBgmButton(isPlaying) {
   if (
     !bgmButton ||
     !bgmPlayIcon ||
@@ -1466,6 +1477,11 @@ function updateBgmBasicButton(isPlaying) {
 
   bgmPlayIcon.hidden = isPlaying;
   bgmPauseIcon.hidden = !isPlaying;
+
+  bgmButton.classList.toggle(
+    "is-playing",
+    isPlaying
+  );
 
   bgmButton.setAttribute(
     "aria-pressed",
@@ -1480,33 +1496,169 @@ function updateBgmBasicButton(isPlaying) {
   );
 }
 
-bgmButton?.addEventListener("click", async () => {
+function cancelBgmFade() {
+  bgmFadeToken += 1;
+
+  if (bgmFadeFrame !== null) {
+    window.cancelAnimationFrame(bgmFadeFrame);
+    bgmFadeFrame = null;
+  }
+}
+
+function fadeBgmVolume({
+  from,
+  to,
+  duration,
+  onComplete
+}) {
   if (!weddingBgm) {
-    console.error("BGM 오디오 요소를 찾지 못했습니다.");
     return;
   }
 
-  if (!weddingBgm.paused) {
-    weddingBgm.pause();
+  cancelBgmFade();
+
+  const currentToken = bgmFadeToken;
+  const startTime = performance.now();
+  const difference = to - from;
+
+  weddingBgm.volume = Math.min(
+    Math.max(from, 0),
+    1
+  );
+
+  function animate(currentTime) {
+    if (currentToken !== bgmFadeToken) {
+      return;
+    }
+
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(
+      elapsed / duration,
+      1
+    );
+
+    /*
+      처음과 끝이 부드러운 easeInOut 곡선
+    */
+    const easedProgress =
+      progress < 0.5
+        ? 2 * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+    weddingBgm.volume = Math.min(
+      Math.max(
+        from + difference * easedProgress,
+        0
+      ),
+      1
+    );
+
+    if (progress < 1) {
+      bgmFadeFrame =
+        window.requestAnimationFrame(animate);
+      return;
+    }
+
+    bgmFadeFrame = null;
+    weddingBgm.volume = to;
+
+    onComplete?.();
+  }
+
+  bgmFadeFrame =
+    window.requestAnimationFrame(animate);
+}
+
+async function playWeddingBgm() {
+  if (!weddingBgm) {
     return;
   }
+
+  cancelBgmFade();
+  weddingBgm.volume = 0;
 
   try {
     await weddingBgm.play();
+
+    updateBgmButton(true);
+
+    fadeBgmVolume({
+      from: 0,
+      to: BGM_TARGET_VOLUME,
+      duration: BGM_FADE_IN_DURATION
+    });
   } catch (error) {
+    updateBgmButton(false);
+
     console.error(
       "배경음악 재생에 실패했습니다.",
       error
     );
   }
+}
+
+function pauseWeddingBgm() {
+  if (!weddingBgm || weddingBgm.paused) {
+    return;
+  }
+
+  const currentVolume =
+    Number.isFinite(weddingBgm.volume)
+      ? weddingBgm.volume
+      : BGM_TARGET_VOLUME;
+
+  fadeBgmVolume({
+    from: currentVolume,
+    to: 0,
+    duration: BGM_FADE_OUT_DURATION,
+    onComplete: () => {
+      weddingBgm.pause();
+
+      /*
+        다음 재생 시 처음부터 페이드 인하도록
+        볼륨을 다시 0으로 유지합니다.
+      */
+      weddingBgm.volume = 0;
+      updateBgmButton(false);
+    }
+  });
+}
+
+bgmButton?.addEventListener("click", async () => {
+  if (!weddingBgm) {
+    console.error(
+      "BGM 오디오 요소를 찾지 못했습니다."
+    );
+    return;
+  }
+
+  if (!weddingBgm.paused) {
+    pauseWeddingBgm();
+    return;
+  }
+
+  await playWeddingBgm();
 });
 
 weddingBgm?.addEventListener("play", () => {
-  updateBgmBasicButton(true);
+  updateBgmButton(true);
 });
 
 weddingBgm?.addEventListener("pause", () => {
-  updateBgmBasicButton(false);
+  updateBgmButton(false);
 });
 
-updateBgmBasicButton(false);
+weddingBgm?.addEventListener("error", () => {
+  cancelBgmFade();
+  updateBgmButton(false);
+
+  console.error(
+    "BGM 파일을 불러오는 중 오류가 발생했습니다."
+  );
+});
+
+if (weddingBgm) {
+  weddingBgm.volume = 0;
+}
+
+updateBgmButton(false);
