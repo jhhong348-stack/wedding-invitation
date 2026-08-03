@@ -4,7 +4,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 body {
@@ -2178,27 +2178,14 @@ button:disabled {
   touch-action: pan-y;
 }
 
-/*
-  사진과 장식 요소가 첫 번째 세로 스와이프를
-  가로채지 않도록 합니다.
-*/
 .hero-image,
 .hero::after,
 .hero-text,
 .hero-scroll-guide {
   pointer-events: none;
-  touch-action: pan-y;
 }
 
 .hero-image {
-  translate: 0 var(--hero-parallax-y, 0px);
-
-  /*
-    상시 will-change는 모바일에서 별도 합성 레이어를
-    계속 유지하게 하므로 제거합니다.
-  */
-  will-change: auto;
-
   -webkit-user-drag: none;
   user-select: none;
 }

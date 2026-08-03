@@ -1095,86 +1095,6 @@ shareButton?.addEventListener("click", async () => {
 });
 
 /* ================================
-   스크롤 등장 애니메이션
-================================ */
-
-function initializeScrollReveal() {
-  const revealElements = document.querySelectorAll(
-    ".section, .wedding-footer"
-  );
-
-  if (revealElements.length === 0) {
-    return;
-  }
-
-  revealElements.forEach((element) => {
-    element.classList.add("scroll-reveal");
-  });
-
-  document.documentElement.classList.add("reveal-ready");
-
-  /*
-    IntersectionObserver를 지원하지 않는 환경에서는
-    모든 섹션을 즉시 표시합니다.
-  */
-  if (!("IntersectionObserver" in window)) {
-    revealElements.forEach((element) => {
-      element.classList.add("is-visible");
-    });
-
-    return;
-  }
-
-  const revealObserver = new IntersectionObserver(
-    (entries, observer) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) {
-          return;
-        }
-
-        entry.target.classList.add("is-visible");
-        observer.unobserve(entry.target);
-      });
-    },
-    {
-      /*
-        섹션이 아주 조금이라도 화면에 들어오면 표시합니다.
-        긴 갤러리·지도·RSVP 섹션도 정상 작동합니다.
-      */
-      threshold: 0,
-      rootMargin: "0px 0px 120px 0px"
-    }
-  );
-
-  revealElements.forEach((element) => {
-    revealObserver.observe(element);
-  });
-
-  /*
-    브라우저 오류나 관찰 누락이 발생해도
-    콘텐츠가 계속 숨겨져 있지 않도록 하는 안전장치입니다.
-  */
-  window.setTimeout(() => {
-    revealElements.forEach((element) => {
-      const rect = element.getBoundingClientRect();
-
-      if (rect.top < window.innerHeight + 200) {
-        element.classList.add("is-visible");
-      }
-    });
-  }, 500);
-}
-
-if (document.readyState === "loading") {
-  document.addEventListener(
-    "DOMContentLoaded",
-    initializeScrollReveal
-  );
-} else {
-  initializeScrollReveal();
-}
-
-/* ================================
    WEDDING D-DAY
 ================================ */
 
@@ -1264,30 +1184,71 @@ if (document.readyState === "loading") {
 }
 
 /* ========================================
-   Scroll Reveal
+   SCROLL REVEAL — NON-BLOCKING
 ======================================== */
 
-const revealElements =
+function initializeRevealAnimation() {
+  const revealElements =
     document.querySelectorAll(".reveal");
 
-const revealObserver =
+  if (revealElements.length === 0) {
+    return;
+  }
+
+  /*
+    IntersectionObserver 미지원 환경에서는
+    모든 섹션을 즉시 표시합니다.
+  */
+  if (!("IntersectionObserver" in window)) {
+    revealElements.forEach((element) => {
+      element.classList.add("show");
+    });
+
+    return;
+  }
+
+  const revealObserver =
     new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                if (!entry.isIntersecting) return;
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            return;
+          }
 
-                entry.target.classList.add("show");
-
-                revealObserver.unobserve(entry.target);
-            });
-        },
-        {
-            threshold: 0.15
-        }
+          entry.target.classList.add("show");
+          observer.unobserve(entry.target);
+        });
+      },
+      {
+        threshold: 0.05,
+        rootMargin: "0px 0px 100px 0px"
+      }
     );
 
-revealElements.forEach((element) => {
+  revealElements.forEach((element) => {
+    /*
+      첫 화면 안에 이미 들어온 요소는
+      Observer 응답을 기다리지 않고 즉시 표시합니다.
+    */
+    const rect = element.getBoundingClientRect();
+
+    if (rect.top < window.innerHeight + 80) {
+      element.classList.add("show");
+      return;
+    }
+
     revealObserver.observe(element);
+  });
+}
+
+/*
+  첫 화면 렌더링과 터치 처리를 먼저 허용한 뒤
+  다음 프레임에 애니메이션을 준비합니다.
+*/
+window.requestAnimationFrame(() => {
+  window.requestAnimationFrame(
+    initializeRevealAnimation
+  );
 });
 
 /* ========================================
@@ -1351,89 +1312,6 @@ window.addEventListener(
 );
 
 updateScrollTopButton();
-
-/* ========================================
-   HERO PARALLAX
-======================================== */
-
-const heroImage = document.querySelector(".hero-image");
-const heroSection = document.querySelector(".hero");
-
-const prefersReducedMotion = window.matchMedia(
-  "(prefers-reduced-motion: reduce)"
-);
-
-let heroParallaxTicking = false;
-
-function updateHeroParallax() {
-  if (
-    !heroImage ||
-    !heroSection ||
-    prefersReducedMotion.matches
-  ) {
-    return;
-  }
-
-  const heroRect = heroSection.getBoundingClientRect();
-
-  /*
-    Hero가 화면에서 완전히 벗어난 경우에는
-    불필요한 계산을 하지 않습니다.
-  */
-  if (
-    heroRect.bottom < 0 ||
-    heroRect.top > window.innerHeight
-  ) {
-    return;
-  }
-
-  /*
-    스크롤한 거리에 따라 사진을 최대 22px까지만
-    아주 은은하게 아래로 이동시킵니다.
-  */
-  const scrollProgress = Math.min(
-    Math.max(window.scrollY / Math.max(heroSection.offsetHeight, 1), 0),
-    1
-  );
-
-  const shift = scrollProgress * 35;
-
-  heroImage.style.setProperty(
-    "--hero-parallax-y",
-    `${shift.toFixed(2)}px`
-  );
-}
-
-function requestHeroParallaxUpdate() {
-  if (heroParallaxTicking) {
-    return;
-  }
-
-  heroParallaxTicking = true;
-
-  window.requestAnimationFrame(() => {
-    updateHeroParallax();
-    heroParallaxTicking = false;
-  });
-}
-
-window.addEventListener(
-  "scroll",
-  requestHeroParallaxUpdate,
-  { passive: true }
-);
-
-window.addEventListener(
-  "resize",
-  requestHeroParallaxUpdate
-);
-
-prefersReducedMotion.addEventListener?.(
-  "change",
-  requestHeroParallaxUpdate
-);
-
-updateHeroParallax();
 
 /* ========================================
    WEDDING BGM
