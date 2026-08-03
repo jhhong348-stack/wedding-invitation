@@ -810,7 +810,7 @@ footer p {
 
 
 /* ========================================
-   WEDDING GALLERY — FINAL MAGAZINE GRID
+   WEDDING GALLERY — INSTAGRAM FEED
 ======================================== */
 
 .gallery-section {
@@ -824,24 +824,24 @@ footer p {
   line-height: 1.8;
 }
 
-/* 갤러리 기본 구조 */
+/* 인스타그램 피드형 3열 */
 
 .wedding-gallery {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 6px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
   width: 100%;
   margin: 0;
   padding: 0;
 }
 
-/* 개별 사진 */
+/* 모든 썸네일을 동일한 4:5 비율로 표시 */
 
 .gallery-item {
   position: relative;
   display: block;
   min-width: 0;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 4 / 5;
   overflow: hidden;
   border: 0;
   background: #eee8e4;
@@ -853,36 +853,28 @@ footer p {
   user-select: none;
 }
 
-/*
-  사진 위의 원형 표시나 확대 아이콘을 모두 제거합니다.
-*/
+/* 사진 위 아이콘과 원형 표시 제거 */
+
 .gallery-item::before,
 .gallery-item::after {
   display: none !important;
   content: none !important;
 }
 
-/* 첫 번째 사진은 전체 폭 대표 사진 */
+/* 처음에는 6장만 표시 */
 
-.gallery-item:first-child {
-  grid-column: 1 / -1;
-  aspect-ratio: 4 / 3;
-}
-
-/* 기본 화면에서는 총 5장만 표시 */
-
-.gallery-item:nth-child(n + 6) {
+.gallery-item:nth-child(n + 7) {
   display: none;
 }
 
-/* 더보기 상태에서는 모든 사진 표시 */
+/* 더보기 상태에서는 전체 사진 표시 */
 
 .wedding-gallery.is-expanded
-  .gallery-item:nth-child(n + 6) {
+  .gallery-item:nth-child(n + 7) {
   display: block;
 }
 
-/* 이미지 */
+/* 썸네일 이미지 */
 
 .gallery-item img {
   display: block;
@@ -896,24 +888,25 @@ footer p {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transition:
-    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.3s ease,
+    transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.28s ease,
     opacity 0.2s ease;
 }
 
 /*
-  대표 사진에서 인물이 잘리면
-  center를 center 35% 등으로 조절할 수 있습니다.
+  특정 사진의 얼굴이나 전신이 잘리면 아래처럼
+  사진별 위치를 추가 조절할 수 있습니다.
+
+  .gallery-item:nth-child(1) img {
+    object-position: center 30%;
+  }
 */
-.gallery-item:first-child img {
-  object-position: center;
-}
 
 /* PC 마우스 hover */
 
 @media (hover: hover) and (pointer: fine) {
   .gallery-item:hover img {
-    transform: scale(1.018);
+    transform: scale(1.025);
     filter: brightness(0.97);
   }
 }
@@ -921,7 +914,7 @@ footer p {
 /* 모바일 터치 반응 */
 
 .gallery-item:active img {
-  transform: scale(0.988);
+  transform: scale(0.985);
   opacity: 0.94;
 }
 
@@ -930,10 +923,10 @@ footer p {
 .gallery-item:focus-visible {
   z-index: 1;
   outline: 2px solid rgba(146, 111, 93, 0.72);
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 
-/* 사진 더보기 버튼 */
+/* 사진 전체보기 버튼 */
 
 .gallery-more-button {
   display: flex;
@@ -973,15 +966,11 @@ footer p {
   }
 }
 
-/* PC 및 넓은 화면 */
+/* 작은 화면에서도 3열을 유지하되 간격을 조금 줄임 */
 
-@media (min-width: 700px) {
+@media (max-width: 360px) {
   .wedding-gallery {
-    gap: 8px;
-  }
-
-  .gallery-item:first-child {
-    aspect-ratio: 3 / 2;
+    gap: 3px;
   }
 }
 
