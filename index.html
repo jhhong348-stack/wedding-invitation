@@ -1356,6 +1356,35 @@
 
   </main>
 
+<!-- 배경음악 -->
+  <audio
+    id="wedding-bgm"
+    preload="metadata"
+    loop
+  >
+    <source
+      src="audio/autumn-in-paris.mp3"
+      type="audio/mpeg"
+    >
+    사용 중인 브라우저에서는 오디오 재생을 지원하지 않습니다.
+  </audio>
+
+  <button
+    type="button"
+    class="bgm-button"
+    id="bgm-button"
+    aria-label="배경음악 재생"
+    aria-pressed="false"
+  >
+    <span class="bgm-play-icon" aria-hidden="true">
+      ♪
+    </span>
+
+    <span class="bgm-pause-icon" aria-hidden="true" hidden>
+      Ⅱ
+    </span>
+  </button>
+
   <button
     type="button"
     class="scroll-top-button"

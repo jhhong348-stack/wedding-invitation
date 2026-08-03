@@ -1396,7 +1396,7 @@ function updateHeroParallax() {
     1
   );
 
-  const shift = scrollProgress * 22;
+  const shift = scrollProgress * 35;
 
   heroImage.style.setProperty(
     "--hero-parallax-y",
@@ -1434,3 +1434,79 @@ prefersReducedMotion.addEventListener?.(
 );
 
 updateHeroParallax();
+
+/* ========================================
+   WEDDING BGM — BASIC PLAYBACK
+======================================== */
+
+const weddingBgm = document.getElementById(
+  "wedding-bgm"
+);
+
+const bgmButton = document.getElementById(
+  "bgm-button"
+);
+
+const bgmPlayIcon = bgmButton?.querySelector(
+  ".bgm-play-icon"
+);
+
+const bgmPauseIcon = bgmButton?.querySelector(
+  ".bgm-pause-icon"
+);
+
+function updateBgmBasicButton(isPlaying) {
+  if (
+    !bgmButton ||
+    !bgmPlayIcon ||
+    !bgmPauseIcon
+  ) {
+    return;
+  }
+
+  bgmPlayIcon.hidden = isPlaying;
+  bgmPauseIcon.hidden = !isPlaying;
+
+  bgmButton.setAttribute(
+    "aria-pressed",
+    String(isPlaying)
+  );
+
+  bgmButton.setAttribute(
+    "aria-label",
+    isPlaying
+      ? "배경음악 일시정지"
+      : "배경음악 재생"
+  );
+}
+
+bgmButton?.addEventListener("click", async () => {
+  if (!weddingBgm) {
+    console.error("BGM 오디오 요소를 찾지 못했습니다.");
+    return;
+  }
+
+  if (!weddingBgm.paused) {
+    weddingBgm.pause();
+    return;
+  }
+
+  try {
+    await weddingBgm.play();
+  } catch (error) {
+    console.error(
+      "배경음악 재생에 실패했습니다.",
+      error
+    );
+  }
+});
+
+weddingBgm?.addEventListener("play", () => {
+  updateBgmBasicButton(true);
+});
+
+weddingBgm?.addEventListener("pause", () => {
+  updateBgmBasicButton(false);
+});
+
+updateBgmBasicButton(false);
