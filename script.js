@@ -1173,3 +1173,87 @@ if (document.readyState === "loading") {
 } else {
   initializeScrollReveal();
 }
+
+/* ================================
+   WEDDING D-DAY
+================================ */
+
+function updateWeddingDday() {
+  const ddayElement = document.getElementById(
+    "wedding-dday"
+  );
+
+  const ddayNumber = document.getElementById(
+    "dday-number"
+  );
+
+  if (!ddayElement || !ddayNumber) {
+    return;
+  }
+
+  /*
+    config.json이 아직 로딩되지 않았다면
+    잠시 기다린 뒤 다시 실행합니다.
+  */
+  if (!weddingConfig?.wedding?.dateISO) {
+    window.setTimeout(updateWeddingDday, 200);
+    return;
+  }
+
+  const weddingDate = new Date(
+    weddingConfig.wedding.dateISO
+  );
+
+  const now = new Date();
+
+  if (Number.isNaN(weddingDate.getTime())) {
+    console.error("결혼식 날짜 형식이 올바르지 않습니다.");
+    return;
+  }
+
+  /*
+    날짜 기준으로 남은 일수를 계산합니다.
+    시간 차이 때문에 D-0이 너무 일찍 바뀌는 것을 막기 위해
+    각 날짜의 자정을 기준으로 계산합니다.
+  */
+  const todayStart = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate()
+  );
+
+  const weddingStart = new Date(
+    weddingDate.getFullYear(),
+    weddingDate.getMonth(),
+    weddingDate.getDate()
+  );
+
+  const millisecondsPerDay =
+    1000 * 60 * 60 * 24;
+
+  const difference = Math.ceil(
+    (weddingStart - todayStart) /
+    millisecondsPerDay
+  );
+
+  ddayElement.classList.remove(
+    "is-wedding-day",
+    "is-finished"
+  );
+
+  if (difference > 0) {
+    ddayNumber.textContent = `D-${difference}`;
+    return;
+  }
+
+  if (difference === 0) {
+    ddayElement.classList.add("is-wedding-day");
+    ddayNumber.textContent = "TODAY";
+    return;
+  }
+
+  ddayElement.classList.add("is-finished");
+  ddayNumber.textContent = "함께해 주셔서 감사합니다";
+}
+
+updateWeddingDday();

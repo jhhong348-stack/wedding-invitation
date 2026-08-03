@@ -8,6 +8,7 @@
     }
   },
   "wedding": {
+    "dateISO": "2026-10-10T12:00:00+09:00",
     "dateKorean": "2026년 10월 10일 토요일 오후 12시",
     "dateEnglish": "2026. 10. 10. SATURDAY · 12:00",
     "dateShort": "2026. 10. 10.",
@@ -46,7 +47,7 @@
   "bride": {
     "bank": "신한은행",
     "number": "110-123-456789",
-    "holder": "장사한"
+    "holder": "장시한"
   }
 }
 }
