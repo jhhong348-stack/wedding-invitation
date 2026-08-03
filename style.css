@@ -2936,27 +2936,55 @@ button,
     box-shadow 0.25s ease;
 }
 
-.bgm-button:active {
-  transform: scale(0.93);
-}
+/* ========================================
+   BGM ICON CROSS FADE
+======================================== */
 
 .bgm-play-icon,
 .bgm-pause-icon {
-  display: flex;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
 
+  display: flex;
   align-items: center;
   justify-content: center;
 
   line-height: 1;
+  pointer-events: none;
+
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
 }
 
-/*
-  hidden 속성이 붙은 아이콘을 확실히 숨깁니다.
-*/
-.bgm-button [hidden] {
-  display: none !important;
+.bgm-play-icon {
+  padding-left: 1px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 19px;
+
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+.bgm-pause-icon {
+  padding-left: 1px;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: -1px;
+
+  opacity: 0;
+  transform: scale(0.72);
+}
+
+.bgm-button.is-playing .bgm-play-icon {
+  opacity: 0;
+  transform: scale(0.72) rotate(10deg);
+}
+
+.bgm-button.is-playing .bgm-pause-icon {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .bgm-play-icon {
@@ -3038,5 +3066,44 @@ button,
   .bgm-button.is-playing::after {
     transition: none;
     animation: none;
+  }
+}
+/* ========================================
+   BGM BUTTON ENTRANCE
+======================================== */
+
+.bgm-button {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.94);
+}
+
+.bgm-button.is-ready {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/*
+  눌렀을 때는 등장 애니메이션보다
+  터치 반응을 우선합니다.
+*/
+.bgm-button.is-ready:active {
+  transform: scale(0.93);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bgm-button.is-ready:hover {
+    transform: translateY(-1px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bgm-button {
+    opacity: 1;
+    transform: none;
+  }
+
+  .bgm-play-icon,
+  .bgm-pause-icon {
+    transition: none;
   }
 }

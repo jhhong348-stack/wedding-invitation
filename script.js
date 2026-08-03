@@ -1436,7 +1436,8 @@ prefersReducedMotion.addEventListener?.(
 updateHeroParallax();
 
 /* ========================================
-   WEDDING BGM — GLASS BUTTON + FADE
+   WEDDING BGM
+   Fade + 저장된 위치 + 재생 선호 기억
 ======================================== */
 
 const weddingBgm = document.getElementById(
@@ -1447,36 +1448,55 @@ const bgmButton = document.getElementById(
   "bgm-button"
 );
 
-const bgmPlayIcon = bgmButton?.querySelector(
-  ".bgm-play-icon"
-);
-
-const bgmPauseIcon = bgmButton?.querySelector(
-  ".bgm-pause-icon"
-);
-
-/*
-  청첩장 BGM은 너무 앞에 나오지 않도록
-  최대 볼륨을 낮게 설정합니다.
-*/
 const BGM_TARGET_VOLUME = 0.2;
 const BGM_FADE_IN_DURATION = 1100;
 const BGM_FADE_OUT_DURATION = 750;
 
+const BGM_STORAGE_KEYS = {
+  enabled: "weddingBgmEnabled",
+  currentTime: "weddingBgmCurrentTime"
+};
+
 let bgmFadeFrame = null;
 let bgmFadeToken = 0;
+let bgmSaveTimer = null;
+let shouldResumeSavedBgm = false;
+
+/*
+  localStorage 접근이 제한된 브라우저에서도
+  페이지 기능이 멈추지 않도록 안전하게 처리합니다.
+*/
+function readBgmStorage(key) {
+  try {
+    return window.localStorage.getItem(key);
+  } catch (error) {
+    console.warn(
+      "BGM 저장 정보를 읽지 못했습니다.",
+      error
+    );
+
+    return null;
+  }
+}
+
+function writeBgmStorage(key, value) {
+  try {
+    window.localStorage.setItem(
+      key,
+      String(value)
+    );
+  } catch (error) {
+    console.warn(
+      "BGM 저장 정보를 기록하지 못했습니다.",
+      error
+    );
+  }
+}
 
 function updateBgmButton(isPlaying) {
-  if (
-    !bgmButton ||
-    !bgmPlayIcon ||
-    !bgmPauseIcon
-  ) {
+  if (!bgmButton) {
     return;
   }
-
-  bgmPlayIcon.hidden = isPlaying;
-  bgmPauseIcon.hidden = !isPlaying;
 
   bgmButton.classList.toggle(
     "is-playing",
@@ -1492,15 +1512,27 @@ function updateBgmButton(isPlaying) {
     "aria-label",
     isPlaying
       ? "배경음악 일시정지"
-      : "배경음악 재생"
+      : shouldResumeSavedBgm
+        ? "배경음악 이어서 재생"
+        : "배경음악 재생"
   );
+
+  bgmButton.title =
+    isPlaying
+      ? "음악 끄기"
+      : shouldResumeSavedBgm
+        ? "음악 이어듣기"
+        : "음악 듣기";
 }
 
 function cancelBgmFade() {
   bgmFadeToken += 1;
 
   if (bgmFadeFrame !== null) {
-    window.cancelAnimationFrame(bgmFadeFrame);
+    window.cancelAnimationFrame(
+      bgmFadeFrame
+    );
+
     bgmFadeFrame = null;
   }
 }
@@ -1532,22 +1564,25 @@ function fadeBgmVolume({
     }
 
     const elapsed = currentTime - startTime;
+
     const progress = Math.min(
       elapsed / duration,
       1
     );
 
-    /*
-      처음과 끝이 부드러운 easeInOut 곡선
-    */
     const easedProgress =
       progress < 0.5
         ? 2 * progress * progress
-        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+        : 1 -
+          Math.pow(
+            -2 * progress + 2,
+            2
+          ) / 2;
 
     weddingBgm.volume = Math.min(
       Math.max(
-        from + difference * easedProgress,
+        from +
+          difference * easedProgress,
         0
       ),
       1
@@ -1555,7 +1590,10 @@ function fadeBgmVolume({
 
     if (progress < 1) {
       bgmFadeFrame =
-        window.requestAnimationFrame(animate);
+        window.requestAnimationFrame(
+          animate
+        );
+
       return;
     }
 
@@ -1566,7 +1604,75 @@ function fadeBgmVolume({
   }
 
   bgmFadeFrame =
-    window.requestAnimationFrame(animate);
+    window.requestAnimationFrame(
+      animate
+    );
+}
+
+function saveBgmCurrentTime() {
+  if (
+    !weddingBgm ||
+    !Number.isFinite(weddingBgm.currentTime)
+  ) {
+    return;
+  }
+
+  writeBgmStorage(
+    BGM_STORAGE_KEYS.currentTime,
+    weddingBgm.currentTime.toFixed(2)
+  );
+}
+
+function restoreBgmPreference() {
+  if (!weddingBgm) {
+    return;
+  }
+
+  shouldResumeSavedBgm =
+    readBgmStorage(
+      BGM_STORAGE_KEYS.enabled
+    ) === "true";
+
+  const savedTime = Number(
+    readBgmStorage(
+      BGM_STORAGE_KEYS.currentTime
+    )
+  );
+
+  if (
+    Number.isFinite(savedTime) &&
+    savedTime >= 0
+  ) {
+    /*
+      duration을 알기 전에는 currentTime 설정이
+      일부 브라우저에서 무시될 수 있어
+      loadedmetadata 이후 다시 적용합니다.
+    */
+    const applySavedTime = () => {
+      if (!Number.isFinite(weddingBgm.duration)) {
+        return;
+      }
+
+      weddingBgm.currentTime =
+        savedTime < weddingBgm.duration
+          ? savedTime
+          : 0;
+    };
+
+    if (weddingBgm.readyState >= 1) {
+      applySavedTime();
+    } else {
+      weddingBgm.addEventListener(
+        "loadedmetadata",
+        applySavedTime,
+        {
+          once: true
+        }
+      );
+    }
+  }
+
+  updateBgmButton(false);
 }
 
 async function playWeddingBgm() {
@@ -1579,6 +1685,13 @@ async function playWeddingBgm() {
 
   try {
     await weddingBgm.play();
+
+    shouldResumeSavedBgm = true;
+
+    writeBgmStorage(
+      BGM_STORAGE_KEYS.enabled,
+      true
+    );
 
     updateBgmButton(true);
 
@@ -1602,6 +1715,19 @@ function pauseWeddingBgm() {
     return;
   }
 
+  saveBgmCurrentTime();
+
+  /*
+    사용자가 직접 껐으므로 다음 방문 때
+    이어듣기 선호도도 끈 상태로 저장합니다.
+  */
+  shouldResumeSavedBgm = false;
+
+  writeBgmStorage(
+    BGM_STORAGE_KEYS.enabled,
+    false
+  );
+
   const currentVolume =
     Number.isFinite(weddingBgm.volume)
       ? weddingBgm.volume
@@ -1611,54 +1737,101 @@ function pauseWeddingBgm() {
     from: currentVolume,
     to: 0,
     duration: BGM_FADE_OUT_DURATION,
+
     onComplete: () => {
       weddingBgm.pause();
-
-      /*
-        다음 재생 시 처음부터 페이드 인하도록
-        볼륨을 다시 0으로 유지합니다.
-      */
       weddingBgm.volume = 0;
       updateBgmButton(false);
     }
   });
 }
 
-bgmButton?.addEventListener("click", async () => {
-  if (!weddingBgm) {
-    console.error(
-      "BGM 오디오 요소를 찾지 못했습니다."
+bgmButton?.addEventListener(
+  "click",
+  async () => {
+    if (!weddingBgm) {
+      console.error(
+        "BGM 오디오 요소를 찾지 못했습니다."
+      );
+
+      return;
+    }
+
+    if (!weddingBgm.paused) {
+      pauseWeddingBgm();
+      return;
+    }
+
+    await playWeddingBgm();
+  }
+);
+
+weddingBgm?.addEventListener(
+  "play",
+  () => {
+    updateBgmButton(true);
+  }
+);
+
+weddingBgm?.addEventListener(
+  "pause",
+  () => {
+    updateBgmButton(false);
+  }
+);
+
+/*
+  재생 중 3초마다 현재 위치를 저장합니다.
+*/
+weddingBgm?.addEventListener(
+  "timeupdate",
+  () => {
+    if (bgmSaveTimer !== null) {
+      return;
+    }
+
+    bgmSaveTimer = window.setTimeout(
+      () => {
+        saveBgmCurrentTime();
+        bgmSaveTimer = null;
+      },
+      3000
     );
-    return;
   }
+);
 
-  if (!weddingBgm.paused) {
-    pauseWeddingBgm();
-    return;
+weddingBgm?.addEventListener(
+  "error",
+  () => {
+    cancelBgmFade();
+    updateBgmButton(false);
+
+    console.error(
+      "BGM 파일을 불러오는 중 오류가 발생했습니다."
+    );
   }
+);
 
-  await playWeddingBgm();
-});
-
-weddingBgm?.addEventListener("play", () => {
-  updateBgmButton(true);
-});
-
-weddingBgm?.addEventListener("pause", () => {
-  updateBgmButton(false);
-});
-
-weddingBgm?.addEventListener("error", () => {
-  cancelBgmFade();
-  updateBgmButton(false);
-
-  console.error(
-    "BGM 파일을 불러오는 중 오류가 발생했습니다."
-  );
-});
+/*
+  페이지를 떠나기 직전 현재 재생 위치를 저장합니다.
+*/
+window.addEventListener(
+  "pagehide",
+  saveBgmCurrentTime
+);
 
 if (weddingBgm) {
   weddingBgm.volume = 0;
 }
 
-updateBgmButton(false);
+restoreBgmPreference();
+
+/*
+  Hero 사진과 문구가 먼저 보인 다음
+  BGM 버튼을 부드럽게 표시합니다.
+*/
+window.setTimeout(() => {
+  bgmButton?.classList.add(
+    "is-ready"
+  );
+}, 700);
