@@ -639,69 +639,6 @@ body {
   display: none;
 }
 
-.rsvp-result {
-  padding: 40px 22px;
-  border: 1px solid #dfd5cf;
-  background: #faf7f5;
-}
-
-.rsvp-result-icon {
-  display: flex;
-  width: 48px;
-  height: 48px;
-  margin: 0 auto 20px;
-  border: 1px solid #a38372;
-  border-radius: 50%;
-  color: #8d6c5b;
-  font-size: 20px;
-  align-items: center;
-  justify-content: center;
-}
-
-.rsvp-result h3 {
-  margin: 0 0 16px;
-  color: #4f4743;
-  font-size: 17px;
-  font-weight: 500;
-}
-
-.rsvp-result-description {
-  margin: 0 0 25px;
-  color: #817770;
-  font-size: 11px;
-  line-height: 1.8;
-}
-
-.rsvp-code-list {
-  margin: 0 0 24px;
-  border-top: 1px solid #e1d7d1;
-}
-
-.rsvp-code-list > div {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  padding: 15px 4px;
-  border-bottom: 1px solid #e1d7d1;
-  align-items: center;
-}
-
-.rsvp-code-list dt {
-  color: #96877f;
-  font-size: 10px;
-  text-align: left;
-}
-
-.rsvp-code-list dd {
-  margin: 0;
-  color: #4f4743;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  text-align: right;
-  word-break: break-all;
-}
-
 .rsvp-honeypot {
   position: absolute !important;
   left: -10000px !important;
@@ -1870,4 +1807,165 @@ body.map-modal-open {
   visibility: visible;
   transform: translateY(0);
   pointer-events: auto;
+}
+
+/* ================================
+   RSVP RESULT
+================================ */
+
+.rsvp-result {
+  padding: 42px 22px 34px;
+  border: 1px solid #ded4ce;
+  background: #faf7f5;
+  text-align: center;
+}
+
+.rsvp-result-check {
+  display: flex;
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 20px;
+  border: 1px solid #9c7b69;
+  border-radius: 50%;
+  color: #8e6d5c;
+  font-size: 22px;
+  align-items: center;
+  justify-content: center;
+}
+
+.rsvp-result-label {
+  margin: 0 0 9px;
+  color: #aa8f80;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 9px;
+  letter-spacing: 2.5px;
+}
+
+.rsvp-result h3 {
+  margin: 0 0 15px;
+  color: #4d4541;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.rsvp-result-description {
+  margin: 0;
+  color: #80766f;
+  font-size: 12px;
+  line-height: 1.85;
+}
+
+.rsvp-save-notice {
+  margin: 27px 0 22px;
+  padding: 17px 14px;
+  border-left: 3px solid #a78675;
+  background: #fff;
+  text-align: left;
+}
+
+.rsvp-save-notice strong {
+  display: block;
+  margin-bottom: 7px;
+  color: #5a504b;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.rsvp-save-notice p {
+  margin: 0;
+  color: #887d76;
+  font-size: 10px;
+  line-height: 1.75;
+}
+
+.rsvp-code-list {
+  margin: 0 0 19px;
+  border: 1px solid #ded4ce;
+  background: #fff;
+}
+
+.rsvp-code-item {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  min-height: 66px;
+  padding: 13px 15px;
+  align-items: center;
+}
+
+.rsvp-code-item + .rsvp-code-item {
+  border-top: 1px solid #e8e0db;
+}
+
+.rsvp-code-item dt {
+  color: #988b84;
+  font-size: 10px;
+  text-align: left;
+}
+
+.rsvp-code-item dd {
+  margin: 0;
+  color: #443d39;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-align: right;
+  word-break: break-all;
+  user-select: all;
+}
+
+.rsvp-copy-info-button {
+  display: flex;
+  width: 100%;
+  min-height: 50px;
+  padding: 11px 16px;
+  border: 1px solid #987665;
+  background: #987665;
+  color: #fff;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.2s ease;
+}
+
+.rsvp-copy-info-button:hover {
+  border-color: #7f6152;
+  background: #7f6152;
+}
+
+.rsvp-copy-info-button:active {
+  transform: translateY(1px);
+}
+
+.rsvp-screenshot-guide {
+  margin: 11px 0 23px;
+  color: #a09690;
+  font-size: 9px;
+  line-height: 1.6;
+}
+
+.rsvp-edit-response-button {
+  padding: 6px;
+  border: 0;
+  background: transparent;
+  color: #846f64;
+  font-family: inherit;
+  font-size: 10px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media (min-width: 700px) {
+  .rsvp-result {
+    max-width: 620px;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 50px 46px 40px;
+  }
 }

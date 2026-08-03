@@ -1211,47 +1211,75 @@
 
   <!-- 제출 완료 화면 -->
   <div
-    class="rsvp-result"
-    id="rsvp-result"
-    hidden
-    aria-live="polite"
-  >
-    <p class="rsvp-result-icon" aria-hidden="true">✓</p>
-    <h3 id="rsvp-result-title">정상적으로 접수되었습니다.</h3>
-
-    <p class="rsvp-result-description">
-      추후 응답을 수정할 때 아래 정보가 필요합니다.<br>
-      화면을 캡처하거나 안전한 곳에 보관해주세요.
-    </p>
-
-    <dl class="rsvp-code-list">
-      <div>
-        <dt>접수번호</dt>
-        <dd id="rsvp-result-confirmation"></dd>
-      </div>
-
-      <div>
-        <dt>수정 코드</dt>
-        <dd id="rsvp-result-edit-code"></dd>
-      </div>
-    </dl>
-
-    <button
-      type="button"
-      class="rsvp-secondary-button"
-      id="rsvp-copy-codes-button"
-    >
-      접수정보 복사
-    </button>
-
-    <button
-      type="button"
-      class="rsvp-text-button"
-      id="rsvp-edit-again-button"
-    >
-      응답 다시 수정하기
-    </button>
+  class="rsvp-result"
+  id="rsvp-result"
+  hidden
+  aria-live="polite"
+>
+  <div class="rsvp-result-check" aria-hidden="true">
+    ✓
   </div>
+
+  <p class="rsvp-result-label">
+    RSVP COMPLETE
+  </p>
+
+  <h3 id="rsvp-result-title">
+    참석 여부가 정상적으로 접수되었습니다.
+  </h3>
+
+  <p class="rsvp-result-description">
+    소중한 답변 감사합니다.<br>
+    추후 응답을 수정할 때 아래 접수정보가 필요합니다.
+  </p>
+
+  <div class="rsvp-save-notice">
+    <strong>접수번호와 수정 코드를 꼭 보관해주세요.</strong>
+
+    <p>
+      같은 브라우저에서는 접수정보가 자동으로 저장됩니다.<br>
+      다른 휴대전화나 브라우저에서는 아래 두 정보가 모두 필요합니다.
+    </p>
+  </div>
+
+  <dl class="rsvp-code-list">
+    <div class="rsvp-code-item">
+      <dt>접수번호</dt>
+
+      <dd id="rsvp-result-confirmation">
+        -
+      </dd>
+    </div>
+
+    <div class="rsvp-code-item">
+      <dt>수정 코드</dt>
+
+      <dd id="rsvp-result-edit-code">
+        -
+      </dd>
+    </div>
+  </dl>
+
+  <button
+    type="button"
+    class="rsvp-copy-info-button"
+    id="rsvp-copy-codes-button"
+  >
+    접수정보 복사하기
+  </button>
+
+  <p class="rsvp-screenshot-guide">
+    복사가 어려운 경우 이 화면을 캡처해 보관해주세요.
+  </p>
+
+  <button
+    type="button"
+    class="rsvp-edit-response-button"
+    id="rsvp-edit-again-button"
+  >
+    응답 내용 다시 수정하기
+  </button>
+</div>
 </section>
 
     <!-- 하단 -->

@@ -506,15 +506,17 @@ function showRsvpResult(result) {
     return;
   }
 
+  clearRsvpError();
+
   rsvpForm.hidden = true;
   rsvpResult.hidden = false;
 
   if (rsvpResultTitle) {
-    rsvpResultTitle.textContent =
-      result.mode === "updated"
-        ? "응답이 수정되었습니다."
-        : "정상적으로 접수되었습니다.";
-  }
+  rsvpResultTitle.textContent =
+    result.mode === "updated"
+      ? "참석 여부가 정상적으로 수정되었습니다."
+      : "참석 여부가 정상적으로 접수되었습니다.";
+}
 
   if (rsvpResultConfirmation) {
     rsvpResultConfirmation.textContent =
@@ -944,13 +946,16 @@ rsvpCopyCodesButton?.addEventListener("click", async () => {
     rsvpResultEditCode?.textContent || "";
 
   const copyValue =
-    `결혼식 RSVP 접수정보\n` +
-    `접수번호: ${confirmationCode}\n` +
-    `수정 코드: ${editCode}`;
+  `홍재호 · 장시한 결혼식 RSVP 접수정보\n\n` +
+  `접수번호: ${confirmationCode}\n` +
+  `수정 코드: ${editCode}\n\n` +
+  `응답 수정 시 접수번호와 수정 코드가 모두 필요합니다.`;
 
   try {
     await copyText(copyValue);
-    showCopyToast("접수정보가 복사되었습니다.");
+    showCopyToast(
+  "접수번호와 수정 코드가 복사되었습니다."
+);
   } catch (error) {
     console.error(error);
   }
@@ -1043,7 +1048,7 @@ shareButton?.addEventListener("click", async () => {
     "https://jhhong348-stack.github.io/wedding-invitation/";
 
   const shareData = {
-    title: "홍재호 · 장사한 결혼식에 초대합니다",
+    title: "홍재호 · 장시한 결혼식에 초대합니다",
     text: "2026년 10월 10일 토요일 오후 12시, 루나미엘레",
     url: pageUrl
   };
