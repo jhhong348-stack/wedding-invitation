@@ -1624,59 +1624,6 @@ body.map-modal-open {
 }
 
 /* ================================
-   SCROLL REVEAL ANIMATION
-================================ */
-
-/*
-  JavaScript가 정상 실행된 경우에만
-  애니메이션 전 상태를 적용합니다.
-*/
-.reveal-ready .scroll-reveal {
-  opacity: 0;
-  transform: translateY(32px);
-  transition:
-    opacity 0.8s ease,
-    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
-}
-
-.reveal-ready .scroll-reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* 섹션 제목은 살짝 늦게 나타남 */
-.reveal-ready .scroll-reveal .section-label,
-.reveal-ready .scroll-reveal h2 {
-  transition:
-    opacity 0.7s ease 0.05s,
-    transform 0.7s ease 0.05s;
-}
-
-.reveal-ready .scroll-reveal:not(.is-visible) .section-label,
-.reveal-ready .scroll-reveal:not(.is-visible) h2 {
-  opacity: 0;
-  transform: translateY(12px);
-}
-
-.reveal-ready .scroll-reveal.is-visible .section-label,
-.reveal-ready .scroll-reveal.is-visible h2 {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* 모션 감소 설정을 사용하는 방문자 배려 */
-@media (prefers-reduced-motion: reduce) {
-  .reveal-ready .scroll-reveal,
-  .reveal-ready .scroll-reveal .section-label,
-  .reveal-ready .scroll-reveal h2 {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
-}
-
-/* ================================
    HERO INTRO ANIMATION
 ================================ */
 
@@ -1691,12 +1638,10 @@ body.map-modal-open {
 @keyframes heroImageReveal {
   from {
     opacity: 0;
-    transform: scale(1.035);
   }
 
   to {
     opacity: 1;
-    transform: scale(1);
   }
 }
 
@@ -2225,30 +2170,42 @@ button:disabled {
 }
 
 /* ========================================
-   HERO PARALLAX
+   HERO — MOBILE SCROLL SAFE
 ======================================== */
 
 .hero {
   overflow: hidden;
+  touch-action: pan-y;
 }
 
 /*
-  기존 Hero 등장 애니메이션의 transform과
-  충돌하지 않도록 개별 translate 속성을 사용합니다.
+  사진과 장식 요소가 첫 번째 세로 스와이프를
+  가로채지 않도록 합니다.
 */
+.hero-image,
+.hero::after,
+.hero-text,
+.hero-scroll-guide {
+  pointer-events: none;
+  touch-action: pan-y;
+}
+
 .hero-image {
   translate: 0 var(--hero-parallax-y, 0px);
-  will-change: translate;
+
+  /*
+    상시 will-change는 모바일에서 별도 합성 레이어를
+    계속 유지하게 하므로 제거합니다.
+  */
+  will-change: auto;
+
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
-/*
-  모션 감소를 사용하는 방문자에게는
-  패럴랙스 효과를 적용하지 않습니다.
-*/
 @media (prefers-reduced-motion: reduce) {
   .hero-image {
     translate: none !important;
-    will-change: auto;
   }
 }
 
@@ -3251,4 +3208,20 @@ button,
   .language-menu {
     top: 47px;
   }
+}
+
+/* ========================================
+   IMMEDIATE PAGE SCROLL
+======================================== */
+
+html,
+body {
+  min-height: 100%;
+  overflow-y: auto;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+.invitation {
+  touch-action: pan-y;
 }
