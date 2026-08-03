@@ -75,18 +75,24 @@
         <p class="small-title">WE ARE GETTING MARRIED</p>
 
         <h1>
-          홍재호
-          <span>&</span>
-          장시한
-        </h1>
+  <span data-config="couple.groom.name">홍재호</span>
+  <span>&</span>
+  <span data-config="couple.bride.name">장사한</span>
+</h1>
 
-        <p class="wedding-date">
-          2026. 10. 10. SATURDAY · 12:00
-        </p>
+        <p
+  class="wedding-date"
+  data-config="wedding.dateEnglish"
+>
+  2026. 10. 10. SATURDAY · 12:00
+</p>
 
-        <p class="wedding-place">
-          LUNA MIELE · CONVENTION HALL
-        </p>
+        <p
+  class="wedding-place"
+  data-config="venue.nameEnglish"
+>
+  LUNA MIELE · CONVENTION HALL
+</p>
       </div>
     </section>
 
@@ -127,13 +133,28 @@
   <h2>예식 안내</h2>
 
   <div class="wedding-summary">
-    <p class="summary-date">2026. 10. 10.</p>
+    <p
+  class="summary-date"
+  data-config="wedding.dateShort"
+>
+  2026. 10. 10.
+</p>
     <p class="summary-day">SATURDAY</p>
 
     <div class="summary-divider"></div>
 
-    <p class="summary-time">오후 12시</p>
-    <p class="summary-venue">루나미엘레 컨벤션홀</p>
+    <p
+  class="summary-time"
+  data-config="wedding.time"
+>
+  오후 12시
+</p>
+    <p
+  class="summary-venue"
+  data-config="venue.name"
+>
+  루나미엘레 컨벤션홀
+</p>
     <p class="summary-address">
       서울 영등포구 여의공원로 101<br>
       CCMM빌딩 12층
@@ -141,21 +162,30 @@
   </div>
 
   <div class="wedding-detail-list">
-    <div class="wedding-detail-row">
-      <span>일시</span>
-      <strong>2026년 10월 10일 토요일 오후 12시</strong>
-    </div>
+  <div class="wedding-detail-row">
+    <span>일시</span>
 
-    <div class="wedding-detail-row">
-      <span>장소</span>
-      <strong>루나미엘레 컨벤션홀</strong>
-    </div>
-
-    <div class="wedding-detail-row">
-      <span>위치</span>
-      <strong>CCMM빌딩 12층</strong>
-    </div>
+    <strong data-config="wedding.dateKorean">
+      2026년 10월 10일 토요일 오후 12시
+    </strong>
   </div>
+
+  <div class="wedding-detail-row">
+    <span>장소</span>
+
+    <strong data-config="venue.name">
+      루나미엘레 컨벤션홀
+    </strong>
+  </div>
+
+  <div class="wedding-detail-row">
+    <span>위치</span>
+
+    <strong data-config="venue.floor">
+      CCMM빌딩 12층
+    </strong>
+  </div>
+</div>
 </section>
 
     <!-- 달력 -->

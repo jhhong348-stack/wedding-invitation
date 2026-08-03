@@ -1757,3 +1757,99 @@ body.map-modal-open {
   font-size: 8px;
   letter-spacing: 2px;
 }
+
+/* ================================
+   SCROLL REVEAL ANIMATION
+================================ */
+
+/*
+  JavaScript가 정상 실행된 경우에만
+  애니메이션 전 상태를 적용합니다.
+*/
+.reveal-ready .scroll-reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-ready .scroll-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 섹션 제목은 살짝 늦게 나타남 */
+.reveal-ready .scroll-reveal .section-label,
+.reveal-ready .scroll-reveal h2 {
+  transition:
+    opacity 0.7s ease 0.05s,
+    transform 0.7s ease 0.05s;
+}
+
+.reveal-ready .scroll-reveal:not(.is-visible) .section-label,
+.reveal-ready .scroll-reveal:not(.is-visible) h2 {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.reveal-ready .scroll-reveal.is-visible .section-label,
+.reveal-ready .scroll-reveal.is-visible h2 {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 모션 감소 설정을 사용하는 방문자 배려 */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-ready .scroll-reveal,
+  .reveal-ready .scroll-reveal .section-label,
+  .reveal-ready .scroll-reveal h2 {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ================================
+   HERO INTRO ANIMATION
+================================ */
+
+.hero-image {
+  animation: heroImageReveal 1.2s ease both;
+}
+
+.hero-text {
+  animation: heroTextReveal 1s ease 0.3s both;
+}
+
+@keyframes heroImageReveal {
+  from {
+    opacity: 0;
+    transform: scale(1.035);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes heroTextReveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-image,
+  .hero-text {
+    animation: none !important;
+  }
+}

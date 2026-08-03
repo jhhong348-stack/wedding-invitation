@@ -1088,3 +1088,67 @@ shareButton?.addEventListener("click", async () => {
     );
   }
 });
+
+/* ================================
+   스크롤 등장 애니메이션
+================================ */
+
+function initializeScrollReveal() {
+  /*
+    첫 화면 Hero는 즉시 보여야 하므로 제외합니다.
+  */
+  const revealElements = document.querySelectorAll(
+    ".section, .wedding-footer"
+  );
+
+  if (revealElements.length === 0) {
+    return;
+  }
+
+  revealElements.forEach((element) => {
+    element.classList.add("scroll-reveal");
+  });
+
+  /*
+    JavaScript가 실행됐을 때만 CSS 숨김 상태를 활성화합니다.
+  */
+  document.documentElement.classList.add("reveal-ready");
+
+  /*
+    오래된 브라우저에서는 애니메이션 없이 모두 표시합니다.
+  */
+  if (!("IntersectionObserver" in window)) {
+    revealElements.forEach((element) => {
+      element.classList.add("is-visible");
+    });
+
+    return;
+  }
+
+  const revealObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+
+        entry.target.classList.add("is-visible");
+
+        /*
+          한 번 나타난 요소는 다시 숨기지 않습니다.
+        */
+        observer.unobserve(entry.target);
+      });
+    },
+    {
+      threshold: 0.12,
+      rootMargin: "0px 0px -45px 0px"
+    }
+  );
+
+  revealElements.forEach((element) => {
+    revealObserver.observe(element);
+  });
+}
+
+initializeScrollReveal();

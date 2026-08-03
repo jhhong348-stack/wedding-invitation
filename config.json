@@ -1,0 +1,52 @@
+{
+  "couple": {
+    "groom": {
+      "name": "홍재호"
+    },
+    "bride": {
+      "name": "장시한"
+    }
+  },
+  "wedding": {
+    "dateKorean": "2026년 10월 10일 토요일 오후 12시",
+    "dateEnglish": "2026. 10. 10. SATURDAY · 12:00",
+    "dateShort": "2026. 10. 10.",
+    "time": "오후 12시"
+  },
+  "venue": {
+    "name": "루나미엘레 컨벤션홀",
+    "nameEnglish": "LUNA MIELE · CONVENTION HALL",
+    "address": "서울특별시 영등포구 여의공원로 101",
+    "floor": "CCMM빌딩 12층",
+    "fullAddress": "서울특별시 영등포구 여의공원로 101 CCMM빌딩 12층"
+  },
+  "share": {
+    "title": "홍재호 · 장시한 결혼식에 초대합니다",
+    "description": "2026년 10월 10일 토요일 오후 12시, 루나미엘레 컨벤션홀",
+    "url": "https://jhhong348-stack.github.io/wedding-invitation/"
+  },
+
+"contact": {
+  "groom": {
+    "name": "홍재호",
+    "phone": "010-3999-2809"
+  },
+  "bride": {
+    "name": "장시한",
+    "phone": "+33-06-73-87-89-57"
+  }
+},
+
+"account": {
+  "groom": {
+    "bank": "국민은행",
+    "number": "536202-01-684690",
+    "holder": "홍재호"
+  },
+  "bride": {
+    "bank": "신한은행",
+    "number": "110-123-456789",
+    "holder": "장사한"
+  }
+}
+}
