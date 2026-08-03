@@ -1579,12 +1579,14 @@ async function playWeddingBgm() {
       duration: BGM_FADE_IN_DURATION
     });
   } catch (error) {
-    updateBgmButton(false);
+  updateBgmButton(false);
 
-    console.error(
-      "배경음악 재생에 실패했습니다.",
-      error
-    );
+  console.error(
+    "배경음악 재생에 실패했습니다.",
+    error
+  );
+
+  throw error;
   }
 }
 
@@ -1703,6 +1705,114 @@ if (weddingBgm) {
 }
 
 restoreBgmPreference();
+
+/* ========================================
+   BGM AUTO START
+   자동재생 시도 → 차단 시 첫 사용자 동작에 재생
+======================================== */
+
+let bgmAutoStartCompleted = false;
+
+function removeBgmStartListeners() {
+  document.removeEventListener(
+    "pointerdown",
+    startBgmFromFirstInteraction
+  );
+
+  document.removeEventListener(
+    "touchstart",
+    startBgmFromFirstInteraction
+  );
+
+  document.removeEventListener(
+    "keydown",
+    startBgmFromFirstInteraction
+  );
+
+  window.removeEventListener(
+    "scroll",
+    startBgmFromFirstInteraction
+  );
+}
+
+async function startBgmFromFirstInteraction() {
+  if (
+    bgmAutoStartCompleted ||
+    !weddingBgm ||
+    !weddingBgm.paused
+  ) {
+    removeBgmStartListeners();
+    return;
+  }
+
+  try {
+    await playWeddingBgm();
+    bgmAutoStartCompleted = true;
+    removeBgmStartListeners();
+  } catch (error) {
+    /*
+      브라우저가 아직 재생을 허용하지 않으면
+      다음 사용자 동작에서 다시 시도합니다.
+    */
+    console.warn(
+      "첫 사용자 동작에서 BGM 재생을 시작하지 못했습니다.",
+      error
+    );
+  }
+}
+
+async function attemptBgmAutoplay() {
+  if (!weddingBgm) {
+    return;
+  }
+
+  try {
+    await playWeddingBgm();
+
+    bgmAutoStartCompleted = true;
+    removeBgmStartListeners();
+  } catch (error) {
+    /*
+      자동재생이 차단된 경우:
+      첫 터치, 첫 클릭, 첫 스크롤, 첫 키 입력에 재생합니다.
+    */
+    document.addEventListener(
+      "pointerdown",
+      startBgmFromFirstInteraction,
+      {
+        passive: true
+      }
+    );
+
+    document.addEventListener(
+      "touchstart",
+      startBgmFromFirstInteraction,
+      {
+        passive: true
+      }
+    );
+
+    document.addEventListener(
+      "keydown",
+      startBgmFromFirstInteraction
+    );
+
+    window.addEventListener(
+      "scroll",
+      startBgmFromFirstInteraction,
+      {
+        passive: true
+      }
+    );
+  }
+}
+
+/*
+  첫 화면 렌더링 직후 자동재생을 시도합니다.
+*/
+window.requestAnimationFrame(() => {
+  attemptBgmAutoplay();
+});
 
 /*
   Hero 사진과 문구가 먼저 보인 다음
