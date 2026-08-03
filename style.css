@@ -2022,3 +2022,195 @@ body.map-modal-open {
   font-size: 20px;
   letter-spacing: 0;
 }
+
+/* ========================================
+   Scroll Reveal Animation
+======================================== */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+        opacity 0.7s ease,
+        transform 0.7s ease;
+    will-change: opacity, transform;
+}
+
+.reveal.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ========================================
+   BUTTON & TOUCH UX
+======================================== */
+
+/*
+  모바일에서 버튼을 빠르게 눌렀을 때 나타나는
+  기본 파란색 하이라이트를 제거합니다.
+*/
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/*
+  주요 버튼에 공통 전환 효과를 적용합니다.
+*/
+.share-button,
+.gallery-more-button,
+.address-copy-button,
+.map-link-button,
+.contact-toggle-button,
+.contact-action-button,
+.account-group-toggle,
+.account-copy-button,
+.official-map-button,
+.rsvp-edit-toggle,
+.rsvp-secondary-button,
+.rsvp-text-button,
+.rsvp-submit-button,
+.rsvp-copy-info-button,
+.rsvp-edit-response-button {
+  transition:
+    transform 0.16s ease,
+    opacity 0.16s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/*
+  손가락이나 마우스로 누르는 순간
+  아주 살짝 작아져 눌린 느낌을 줍니다.
+*/
+.share-button:active,
+.gallery-more-button:active,
+.address-copy-button:active,
+.map-link-button:active,
+.contact-toggle-button:active,
+.contact-action-button:active,
+.account-group-toggle:active,
+.account-copy-button:active,
+.official-map-button:active,
+.rsvp-edit-toggle:active,
+.rsvp-secondary-button:active,
+.rsvp-submit-button:active,
+.rsvp-copy-info-button:active {
+  transform: scale(0.975);
+  opacity: 0.88;
+}
+
+/*
+  작은 텍스트형 버튼은 크기 변화가 과해 보일 수 있으므로
+  아래로 1px만 이동시킵니다.
+*/
+.rsvp-text-button:active,
+.rsvp-edit-response-button:active {
+  transform: translateY(1px);
+  opacity: 0.7;
+}
+
+/*
+  키보드 사용자가 현재 선택한 버튼을 알 수 있도록
+  포커스 표시를 제공합니다.
+*/
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid rgba(146, 111, 93, 0.65);
+  outline-offset: 3px;
+}
+
+/*
+  버튼이 비활성화된 경우 눌림 효과를 제거합니다.
+*/
+button:disabled {
+  transform: none !important;
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/*
+  모바일에서 누르기 편하도록 주요 버튼의
+  최소 터치 높이를 보장합니다.
+*/
+.share-button,
+.gallery-more-button,
+.address-copy-button,
+.map-link-button,
+.contact-toggle-button,
+.contact-action-button,
+.account-copy-button,
+.rsvp-secondary-button,
+.rsvp-submit-button,
+.rsvp-copy-info-button {
+  min-height: 48px;
+  touch-action: manipulation;
+}
+
+/*
+  접기·펼치기 버튼은 전체 영역을 누를 수 있도록 합니다.
+*/
+.account-group-toggle,
+.rsvp-edit-toggle {
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+/*
+  데스크톱에서 마우스를 올렸을 때만
+  아주 은은한 반응을 줍니다.
+*/
+@media (hover: hover) and (pointer: fine) {
+  .share-button:hover,
+  .gallery-more-button:hover,
+  .address-copy-button:hover,
+  .contact-toggle-button:hover,
+  .account-copy-button:hover,
+  .rsvp-secondary-button:hover,
+  .rsvp-copy-info-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 14px rgba(73, 57, 49, 0.08);
+  }
+
+  .map-link-button:hover,
+  .contact-action-button:hover {
+    transform: translateY(-1px);
+  }
+
+  .official-map-button:hover {
+    transform: scale(1.005);
+  }
+}
+
+/*
+  사용자가 모션 감소를 설정한 경우에는
+  크기 이동 애니메이션을 사용하지 않습니다.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .share-button,
+  .gallery-more-button,
+  .address-copy-button,
+  .map-link-button,
+  .contact-toggle-button,
+  .contact-action-button,
+  .account-group-toggle,
+  .account-copy-button,
+  .official-map-button,
+  .rsvp-edit-toggle,
+  .rsvp-secondary-button,
+  .rsvp-text-button,
+  .rsvp-submit-button,
+  .rsvp-copy-info-button,
+  .rsvp-edit-response-button {
+    transition: none !important;
+  }
+
+  button:active,
+  a:active {
+    transform: none !important;
+  }
+}
