@@ -2408,3 +2408,73 @@ button:disabled {
     transform: none !important;
   }
 }
+
+/* ========================================
+   HERO SCROLL GUIDE
+======================================== */
+
+.hero {
+  position: relative;
+}
+
+.hero-scroll-guide {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 22px;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  color: rgba(255, 255, 255, 0.88);
+  text-align: center;
+
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.hero-scroll-text {
+  margin-bottom: 3px;
+  font-family: Arial, sans-serif;
+  font-size: 7px;
+  letter-spacing: 2.2px;
+}
+
+.hero-scroll-arrow {
+  display: block;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 23px;
+  line-height: 1;
+
+  animation: heroScrollArrowMove 1.8s ease-in-out infinite;
+}
+
+@keyframes heroScrollArrowMove {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: translateY(0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(7px);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-scroll-guide {
+    bottom: 17px;
+  }
+
+  .hero-scroll-arrow {
+    font-size: 21px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll-arrow {
+    animation: none;
+  }
+}
