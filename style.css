@@ -2410,41 +2410,63 @@ button:disabled {
 }
 
 /* ========================================
-   HERO SCROLL GUIDE
+   HERO SCROLL GUIDE — 겹침 방지
 ======================================== */
 
 .hero {
   position: relative;
+  overflow: hidden;
 }
 
+/*
+  기존 이름·날짜·장소 묶음을 위로 이동해
+  하단 SCROLL 영역을 확보합니다.
+
+  translate는 기존 transform 애니메이션과
+  비교적 안전하게 함께 사용할 수 있습니다.
+*/
+.hero-text {
+  translate: 0 -34px;
+}
+
+/*
+  SCROLL은 Hero 맨 아래 중앙에 별도로 고정합니다.
+*/
 .hero-scroll-guide {
   position: absolute;
-  z-index: 3;
+  z-index: 4;
   left: 50%;
-  bottom: 22px;
+  bottom: 8px;
 
   display: flex;
+  min-width: 70px;
   align-items: center;
   flex-direction: column;
+  justify-content: flex-end;
+  gap: 1px;
 
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.92);
   text-align: center;
+  text-shadow: 0 1px 7px rgba(0, 0, 0, 0.55);
 
-  transform: translateX(-50%);
+  translate: -50% 0;
   pointer-events: none;
 }
 
 .hero-scroll-text {
-  margin-bottom: 3px;
+  display: block;
+  margin: 0;
   font-family: Arial, sans-serif;
   font-size: 7px;
-  letter-spacing: 2.2px;
+  line-height: 1;
+  letter-spacing: 2px;
 }
 
 .hero-scroll-arrow {
   display: block;
+  height: 22px;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 23px;
+  font-size: 22px;
   line-height: 1;
 
   animation: heroScrollArrowMove 1.8s ease-in-out infinite;
@@ -2454,22 +2476,52 @@ button:disabled {
   0%,
   100% {
     opacity: 0.45;
-    transform: translateY(0);
+    transform: translateY(-1px);
   }
 
   50% {
     opacity: 1;
-    transform: translateY(7px);
+    transform: translateY(4px);
   }
 }
 
+/*
+  화면 높이가 작은 모바일에서는
+  텍스트를 조금 더 위로 올립니다.
+*/
 @media (max-width: 480px) {
+  .hero-text {
+    translate: 0 -42px;
+  }
+
   .hero-scroll-guide {
-    bottom: 17px;
+    bottom: 5px;
   }
 
   .hero-scroll-arrow {
-    font-size: 21px;
+    height: 20px;
+    font-size: 20px;
+  }
+}
+
+/*
+  세로 화면이 특히 짧은 휴대전화 대응
+*/
+@media (max-height: 650px) {
+  .hero-text {
+    translate: 0 -48px;
+  }
+
+  .hero-scroll-guide {
+    bottom: 3px;
+  }
+
+  .hero-scroll-text {
+    font-size: 6px;
+  }
+
+  .hero-scroll-arrow {
+    font-size: 18px;
   }
 }
 
