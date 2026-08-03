@@ -816,7 +816,10 @@ footer p {
   font-weight: 600;
 }
 
-/* 웨딩 갤러리 */
+/* ========================================
+   WEDDING GALLERY — MAGAZINE GRID
+======================================== */
+
 .gallery-section {
   overflow: hidden;
 }
@@ -828,98 +831,199 @@ footer p {
   line-height: 1.8;
 }
 
+/*
+  첫 사진은 전체 폭,
+  나머지는 깔끔한 2열로 배치합니다.
+*/
 .wedding-gallery {
-  column-count: 2;
-  column-gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  width: 100%;
   text-align: left;
 }
 
 .gallery-item {
   position: relative;
-  display: inline-block;
-  width: 100%;
-  margin: 0 0 8px;
+  display: block;
+  min-width: 0;
   overflow: hidden;
-  break-inside: avoid;
+
   background: #eee8e4;
   cursor: zoom-in;
+
+  /*
+    이미지 로딩 전에도 레이아웃이 흔들리지 않게 합니다.
+  */
+  aspect-ratio: 1 / 1;
+}
+
+/*
+  첫 번째 사진을 대표 이미지로 사용합니다.
+*/
+.gallery-item:first-child {
+  grid-column: 1 / -1;
+  aspect-ratio: 4 / 3;
+}
+
+/*
+  기본 화면에서는 대표 사진 1장과
+  썸네일 4장, 총 5장만 표시합니다.
+*/
+.gallery-item:nth-child(n + 6) {
+  display: none;
+}
+
+/*
+  더보기를 누르면 전체 사진을 표시합니다.
+*/
+.wedding-gallery.is-expanded
+  .gallery-item:nth-child(n + 6) {
+  display: block;
 }
 
 .gallery-item img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
   transition:
-    transform 0.55s ease,
-    opacity 0.35s ease;
+    transform 0.45s ease,
+    opacity 0.3s ease;
 }
 
+/*
+  대표 사진의 인물 위치에 따라 필요하면
+  object-position 값만 조절할 수 있습니다.
+*/
+.gallery-item:first-child img {
+  object-position: center;
+}
+
+/*
+  확대 가능하다는 표시를 너무 튀지 않게 제공합니다.
+*/
 .gallery-item::after {
   position: absolute;
   right: 10px;
   bottom: 10px;
-  width: 28px;
-  height: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.75);
+
+  display: flex;
+  width: 25px;
+  height: 25px;
+
+  border: 1px solid rgba(255, 255, 255, 0.68);
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.18);
-  color: white;
+  background: rgba(30, 26, 24, 0.2);
+
+  color: rgba(255, 255, 255, 0.94);
   content: "+";
   font-family: Arial, sans-serif;
-  font-size: 19px;
+  font-size: 17px;
   font-weight: 300;
-  line-height: 26px;
-  text-align: center;
+  line-height: 1;
+
+  align-items: center;
+  justify-content: center;
+
   opacity: 0;
-  transition: opacity 0.3s ease;
   pointer-events: none;
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
 }
 
-.gallery-item:hover img {
-  transform: scale(1.025);
+@media (hover: hover) and (pointer: fine) {
+  .gallery-item:hover img {
+    transform: scale(1.018);
+  }
+
+  .gallery-item:hover::after {
+    opacity: 1;
+    transform: translateY(-1px);
+  }
 }
 
-.gallery-item:hover::after {
-  opacity: 1;
+/*
+  터치 화면에서는 확대 표시를 은은하게 유지합니다.
+*/
+@media (hover: none) {
+  .gallery-item::after {
+    opacity: 0.72;
+  }
 }
 
-/* 처음에는 8장까지만 표시 */
-.gallery-item:nth-child(n + 9) {
-  display: none;
-}
-
-/* 더보기 버튼을 누르면 전체 표시 */
-.wedding-gallery.is-expanded .gallery-item:nth-child(n + 9) {
-  display: inline-block;
-}
+/* 사진 더보기 버튼 */
 
 .gallery-more-button {
-  display: block;
-  min-width: 145px;
-  margin: 25px auto 0;
-  padding: 13px 24px;
+  display: flex;
+  min-width: 150px;
+  min-height: 43px;
+  margin: 26px auto 0;
+  padding: 10px 24px;
+
   border: 1px solid #cdbeb5;
-  border-radius: 30px;
+  border-radius: 0;
   background: transparent;
+
   color: #655b55;
   font-family: inherit;
-  font-size: 13px;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition:
-    background 0.25s ease,
-    color 0.25s ease,
-    border-color 0.25s ease;
-}
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 1.2px;
 
-.gallery-more-button:hover {
-  border-color: #997867;
-  background: #997867;
-  color: white;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.18s ease;
 }
 
 .gallery-more-button:active {
-  transform: translateY(1px);
+  transform: scale(0.98);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .gallery-more-button:hover {
+    border-color: #997867;
+    background: #997867;
+    color: #fff;
+  }
+}
+
+/*
+  큰 화면에서도 매거진형 비율은 유지하되
+  간격을 조금 넓힙니다.
+*/
+@media (min-width: 700px) {
+  .wedding-gallery {
+    gap: 8px;
+  }
+
+  .gallery-item:first-child {
+    aspect-ratio: 3 / 2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-item img,
+  .gallery-item::after,
+  .gallery-more-button {
+    transition: none;
+  }
 }
 
 /* PhotoSwipe 배경 */
@@ -927,18 +1031,6 @@ footer p {
   --pswp-bg: rgba(18, 16, 15, 0.96);
   --pswp-icon-color: #ffffff;
   --pswp-icon-color-secondary: #ffffff;
-}
-
-/* PC처럼 넓은 화면 */
-@media (min-width: 700px) {
-  .wedding-gallery {
-    column-count: 3;
-    column-gap: 10px;
-  }
-
-  .gallery-item {
-    margin-bottom: 10px;
-  }
 }
 
 /* 터치 기기에서는 확대 아이콘을 은은하게 표시 */
