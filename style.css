@@ -1598,70 +1598,6 @@ body.map-modal-open {
    WEDDING FOOTER
 ================================ */
 
-.wedding-footer {
-  padding: 85px 28px 45px;
-  background: #423a36;
-  color: #eee7e1;
-  text-align: center;
-}
-
-.footer-decoration {
-  display: flex;
-  width: 155px;
-  margin: 0 auto 32px;
-  align-items: center;
-  justify-content: center;
-  gap: 13px;
-}
-
-.footer-decoration > span:not(.footer-heart) {
-  width: 48px;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.footer-heart {
-  color: #d4c2b7;
-  font-family: Georgia, serif;
-  font-size: 18px;
-}
-
-.footer-message {
-  margin: 0 0 32px;
-  color: #e2d9d3;
-  font-size: 13px;
-  line-height: 2;
-}
-
-.footer-couple {
-  display: flex;
-  margin-bottom: 8px;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-}
-
-.footer-couple strong {
-  font-size: 16px;
-  font-weight: 400;
-  letter-spacing: 1px;
-}
-
-.footer-couple span {
-  color: #bda99e;
-  font-family: Georgia, serif;
-  font-size: 16px;
-  font-style: italic;
-}
-
-.footer-date {
-  margin: 0 0 35px;
-  color: #c9b9b0;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 13px;
-  letter-spacing: 2px;
-}
-
 .share-button {
   display: flex;
   width: min(100%, 280px);
@@ -1685,14 +1621,6 @@ body.map-modal-open {
 .share-button:hover {
   border-color: #fff;
   background: rgba(255, 255, 255, 0.1);
-}
-
-.footer-copyright {
-  margin: 45px 0 0;
-  color: rgba(255, 255, 255, 0.35);
-  font-family: Arial, sans-serif;
-  font-size: 8px;
-  letter-spacing: 2px;
 }
 
 /* ================================
@@ -2528,5 +2456,207 @@ button:disabled {
 @media (prefers-reduced-motion: reduce) {
   .hero-scroll-arrow {
     animation: none;
+  }
+}
+
+/* ========================================
+   WEDDING FOOTER — FINAL POLISH
+======================================== */
+
+.wedding-footer {
+  position: relative;
+  overflow: hidden;
+  padding:
+    88px
+    28px
+    calc(42px + env(safe-area-inset-bottom));
+
+  background:
+    linear-gradient(
+      180deg,
+      #473e39 0%,
+      #382f2b 100%
+    );
+
+  color: #eee7e2;
+  text-align: center;
+}
+
+/*
+  아주 은은한 빛 번짐을 추가합니다.
+*/
+.wedding-footer::before {
+  position: absolute;
+  top: -140px;
+  left: 50%;
+
+  width: 340px;
+  height: 260px;
+
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.035);
+
+  content: "";
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.footer-decoration {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  width: 160px;
+  margin: 0 auto 27px;
+
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+}
+
+.footer-decoration > span:not(.footer-heart) {
+  width: 49px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.27);
+}
+
+.footer-heart {
+  color: #d7c3b7;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+}
+
+.footer-label {
+  position: relative;
+  z-index: 1;
+
+  margin: 0 0 17px;
+
+  color: #c9ada0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 9px;
+  letter-spacing: 3.2px;
+}
+
+.footer-title {
+  position: relative;
+  z-index: 1;
+
+  margin: 0 0 22px;
+
+  color: #f3eeeb;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.8;
+  letter-spacing: -0.3px;
+}
+
+.footer-message {
+  position: relative;
+  z-index: 1;
+
+  margin: 0 0 37px;
+
+  color: rgba(238, 231, 226, 0.72);
+  font-size: 12px;
+  line-height: 2;
+}
+
+.footer-couple {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  margin-bottom: 9px;
+
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.footer-couple strong {
+  color: #f5f0ed;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: 1.2px;
+}
+
+.footer-couple span {
+  color: #c3a89b;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  font-style: italic;
+}
+
+.footer-date {
+  position: relative;
+  z-index: 1;
+
+  margin: 0 0 38px;
+
+  color: rgba(229, 216, 208, 0.68);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 12px;
+  letter-spacing: 2.4px;
+}
+
+.share-button {
+  position: relative;
+  z-index: 1;
+
+  display: inline-flex;
+  width: min(100%, 280px);
+  min-height: 50px;
+  margin: 0 auto;
+  padding: 11px 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.43);
+  background: rgba(255, 255, 255, 0.025);
+
+  color: #fff;
+  font-family: inherit;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.share-button-icon {
+  display: inline-block;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+.footer-copyright {
+  position: relative;
+  z-index: 1;
+
+  margin: 47px 0 0;
+
+  color: rgba(255, 255, 255, 0.3);
+  font-family: Arial, sans-serif;
+  font-size: 8px;
+  letter-spacing: 2.4px;
+}
+
+@media (max-width: 480px) {
+  .wedding-footer {
+    padding-top: 76px;
+  }
+
+  .footer-title {
+    font-size: 18px;
+  }
+
+  .footer-message {
+    font-size: 11px;
   }
 }
