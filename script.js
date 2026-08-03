@@ -1351,3 +1351,86 @@ window.addEventListener(
 );
 
 updateScrollTopButton();
+
+/* ========================================
+   HERO PARALLAX
+======================================== */
+
+const heroImage = document.querySelector(".hero-image");
+const heroSection = document.querySelector(".hero");
+
+const prefersReducedMotion = window.matchMedia(
+  "(prefers-reduced-motion: reduce)"
+);
+
+let heroParallaxTicking = false;
+
+function updateHeroParallax() {
+  if (
+    !heroImage ||
+    !heroSection ||
+    prefersReducedMotion.matches
+  ) {
+    return;
+  }
+
+  const heroRect = heroSection.getBoundingClientRect();
+
+  /*
+    Hero가 화면에서 완전히 벗어난 경우에는
+    불필요한 계산을 하지 않습니다.
+  */
+  if (
+    heroRect.bottom < 0 ||
+    heroRect.top > window.innerHeight
+  ) {
+    return;
+  }
+
+  /*
+    스크롤한 거리에 따라 사진을 최대 22px까지만
+    아주 은은하게 아래로 이동시킵니다.
+  */
+  const scrollProgress = Math.min(
+    Math.max(window.scrollY / Math.max(heroSection.offsetHeight, 1), 0),
+    1
+  );
+
+  const shift = scrollProgress * 22;
+
+  heroImage.style.setProperty(
+    "--hero-parallax-y",
+    `${shift.toFixed(2)}px`
+  );
+}
+
+function requestHeroParallaxUpdate() {
+  if (heroParallaxTicking) {
+    return;
+  }
+
+  heroParallaxTicking = true;
+
+  window.requestAnimationFrame(() => {
+    updateHeroParallax();
+    heroParallaxTicking = false;
+  });
+}
+
+window.addEventListener(
+  "scroll",
+  requestHeroParallaxUpdate,
+  { passive: true }
+);
+
+window.addEventListener(
+  "resize",
+  requestHeroParallaxUpdate
+);
+
+prefersReducedMotion.addEventListener?.(
+  "change",
+  requestHeroParallaxUpdate
+);
+
+updateHeroParallax();

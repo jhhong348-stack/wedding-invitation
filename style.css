@@ -2295,3 +2295,31 @@ button:disabled {
     transition: none;
   }
 }
+
+/* ========================================
+   HERO PARALLAX
+======================================== */
+
+.hero {
+  overflow: hidden;
+}
+
+/*
+  기존 Hero 등장 애니메이션의 transform과
+  충돌하지 않도록 개별 translate 속성을 사용합니다.
+*/
+.hero-image {
+  translate: 0 var(--hero-parallax-y, 0px);
+  will-change: translate;
+}
+
+/*
+  모션 감소를 사용하는 방문자에게는
+  패럴랙스 효과를 적용하지 않습니다.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .hero-image {
+    translate: none !important;
+    will-change: auto;
+  }
+}
