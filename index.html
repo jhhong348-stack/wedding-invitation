@@ -1356,6 +1356,73 @@
 
   </main>
 
+<!-- 언어 선택 -->
+<div class="language-selector" id="language-selector">
+  <button
+    type="button"
+    class="language-toggle-button"
+    id="language-toggle-button"
+    aria-label="언어 선택"
+    aria-expanded="false"
+    aria-controls="language-menu"
+  >
+    <span id="current-language-label">KO</span>
+    <span
+      class="language-toggle-arrow"
+      aria-hidden="true"
+    >
+      ▾
+    </span>
+  </button>
+
+  <div
+    class="language-menu"
+    id="language-menu"
+    role="menu"
+    hidden
+  >
+    <button
+      type="button"
+      class="language-option is-active"
+      data-language="ko"
+      role="menuitem"
+    >
+      <span>KO</span>
+      <small>한국어</small>
+    </button>
+
+    <button
+      type="button"
+      class="language-option"
+      data-language="en"
+      role="menuitem"
+    >
+      <span>EN</span>
+      <small>English</small>
+    </button>
+
+    <button
+      type="button"
+      class="language-option"
+      data-language="zh"
+      role="menuitem"
+    >
+      <span>中文</span>
+      <small>简体中文</small>
+    </button>
+
+    <button
+      type="button"
+      class="language-option"
+      data-language="fr"
+      role="menuitem"
+    >
+      <span>FR</span>
+      <small>Français</small>
+    </button>
+  </div>
+</div>
+
 <!-- 배경음악 -->
   <audio
     id="wedding-bgm"
@@ -1399,6 +1466,7 @@
     계좌번호가 복사되었습니다.
   </div>
 
+  <script src="translations.js"></script>
   <script src="script.js"></script>
 
   <script type="module">
