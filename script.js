@@ -1179,60 +1179,51 @@ if (document.readyState === "loading") {
 ================================ */
 
 function updateWeddingDday() {
-  const ddayElement = document.getElementById(
-    "wedding-dday"
-  );
+  const ddayElement =
+    document.getElementById("wedding-dday");
 
-  const ddayNumber = document.getElementById(
-    "dday-number"
-  );
+  const ddayNumber =
+    document.getElementById("dday-number");
 
   if (!ddayElement || !ddayNumber) {
+    console.error(
+      "D-Day 표시 요소를 찾지 못했습니다."
+    );
     return;
   }
 
   /*
-    config.json이 아직 로딩되지 않았다면
-    잠시 기다린 뒤 다시 실행합니다.
+    결혼식 날짜를 직접 지정합니다.
+    시간은 D-Day 일수 계산에 사용하지 않고,
+    날짜 부분만 기준으로 계산합니다.
   */
-  if (!weddingConfig?.wedding?.dateISO) {
-    window.setTimeout(updateWeddingDday, 200);
-    return;
-  }
-
-  const weddingDate = new Date(
-    weddingConfig.wedding.dateISO
-  );
+  const weddingYear = 2026;
+  const weddingMonth = 10;
+  const weddingDay = 10;
 
   const now = new Date();
 
-  if (Number.isNaN(weddingDate.getTime())) {
-    console.error("결혼식 날짜 형식이 올바르지 않습니다.");
-    return;
-  }
-
   /*
-    날짜 기준으로 남은 일수를 계산합니다.
-    시간 차이 때문에 D-0이 너무 일찍 바뀌는 것을 막기 위해
-    각 날짜의 자정을 기준으로 계산합니다.
+    오늘과 결혼식 날짜를 UTC 자정 기준으로 맞춰
+    서머타임이나 시간대 차이로 인한 오차를 줄입니다.
   */
-  const todayStart = new Date(
+  const todayUtc = Date.UTC(
     now.getFullYear(),
     now.getMonth(),
     now.getDate()
   );
 
-  const weddingStart = new Date(
-    weddingDate.getFullYear(),
-    weddingDate.getMonth(),
-    weddingDate.getDate()
+  const weddingUtc = Date.UTC(
+    weddingYear,
+    weddingMonth - 1,
+    weddingDay
   );
 
   const millisecondsPerDay =
     1000 * 60 * 60 * 24;
 
-  const difference = Math.ceil(
-    (weddingStart - todayStart) /
+  const difference = Math.round(
+    (weddingUtc - todayUtc) /
     millisecondsPerDay
   );
 
@@ -1247,13 +1238,27 @@ function updateWeddingDday() {
   }
 
   if (difference === 0) {
-    ddayElement.classList.add("is-wedding-day");
+    ddayElement.classList.add(
+      "is-wedding-day"
+    );
+
     ddayNumber.textContent = "TODAY";
     return;
   }
 
-  ddayElement.classList.add("is-finished");
-  ddayNumber.textContent = "함께해 주셔서 감사합니다";
+  ddayElement.classList.add(
+    "is-finished"
+  );
+
+  ddayNumber.textContent =
+    "함께해 주셔서 감사합니다";
 }
 
-updateWeddingDday();
+if (document.readyState === "loading") {
+  document.addEventListener(
+    "DOMContentLoaded",
+    updateWeddingDday
+  );
+} else {
+  updateWeddingDday();
+}
