@@ -2323,3 +2323,88 @@ button:disabled {
     will-change: auto;
   }
 }
+
+/* ========================================
+   GALLERY INTERACTION UX
+======================================== */
+
+.gallery-item {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: #eee8e4;
+}
+
+/*
+  사진의 기존 비율과 레이아웃은 유지하면서
+  확대 움직임만 부드럽게 적용합니다.
+*/
+.gallery-item img {
+  display: block;
+  width: 100%;
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.35s ease,
+    opacity 0.25s ease;
+  transform-origin: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/*
+  사진 위에 아주 은은한 어두운 레이어를 준비합니다.
+*/
+.gallery-item::after {
+  position: absolute;
+  inset: 0;
+  background: rgba(32, 25, 22, 0);
+  content: "";
+  pointer-events: none;
+  transition: background-color 0.35s ease;
+}
+
+/*
+  마우스가 있는 PC 환경에서만 확대 효과를 적용합니다.
+*/
+@media (hover: hover) and (pointer: fine) {
+  .gallery-item:hover img {
+    transform: scale(1.025);
+    filter: brightness(0.96);
+  }
+
+  .gallery-item:hover::after {
+    background: rgba(32, 25, 22, 0.03);
+  }
+}
+
+/*
+  모바일에서는 누르는 순간에만 아주 살짝 반응합니다.
+*/
+.gallery-item:active img {
+  transform: scale(0.985);
+  opacity: 0.92;
+}
+
+/*
+  키보드로 사진 링크를 선택했을 때도
+  현재 위치를 명확하게 보여줍니다.
+*/
+.gallery-item:focus-visible {
+  outline: 2px solid rgba(146, 111, 93, 0.7);
+  outline-offset: 3px;
+}
+
+/*
+  사용자가 모션 감소를 설정한 경우 움직임을 제거합니다.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .gallery-item img,
+  .gallery-item::after {
+    transition: none !important;
+  }
+
+  .gallery-item:hover img,
+  .gallery-item:active img {
+    transform: none !important;
+  }
+}
