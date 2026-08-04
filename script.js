@@ -40,7 +40,7 @@ if (gallery && galleryMoreButton) {
 
     galleryMoreButton.textContent = isExpanded
       ? "사진 접기"
-      : "사진 더보기";
+      : "사진 전체보기";
 
     galleryMoreButton.setAttribute(
       "aria-expanded",
