@@ -365,30 +365,6 @@ body {
   text-decoration: none;
 }
 
-/* 계좌번호 */
-.account-card {
-  margin-bottom: 12px;
-  padding: 23px 18px;
-  background: #f7f3f0;
-  border-radius: 4px;
-}
-
-.account-card p {
-  margin: 3px 0;
-  font-size: 14px;
-}
-
-.copy-button {
-  width: 100%;
-  margin-top: 15px;
-  padding: 11px;
-  border: 1px solid #ae9486;
-  border-radius: 3px;
-  background: white;
-  color: #664f44;
-  cursor: pointer;
-}
-
 /* ================================
    RSVP
 ================================ */
@@ -2284,7 +2260,7 @@ body.map-modal-open {
 }
 
 /* ================================
-   ACCOUNT
+   ACCOUNT — REFACTORED
 ================================ */
 
 .account-section {
@@ -2299,25 +2275,32 @@ body.map-modal-open {
 }
 
 .account-notice {
-  margin-bottom: 35px;
-  padding: 14px 18px;
-  background: #faf7f5;
-  color: #857a74;
+  margin-bottom: 34px;
+  padding: 13px 16px;
+  border-top: 1px solid #eee6e1;
+  border-bottom: 1px solid #eee6e1;
+  background: transparent;
+  color: #928781;
   font-size: 11px;
   line-height: 1.7;
 }
 
+/*
+  전체 계좌 영역은 카드 박스보다
+  얇은 구분선 중심의 안내문 형태로 정리합니다.
+*/
 .account-group {
   margin-bottom: 12px;
-  border: 1px solid #e4dcd7;
-  background: #fff;
+  border-top: 1px solid #e7dfda;
+  border-bottom: 1px solid #e7dfda;
+  background: transparent;
 }
 
 .account-group-toggle {
   display: flex;
   width: 100%;
-  min-height: 59px;
-  padding: 0 20px;
+  min-height: 60px;
+  padding: 0 4px;
   border: 0;
   background: transparent;
   color: #554d48;
@@ -2330,9 +2313,9 @@ body.map-modal-open {
 }
 
 .account-toggle-icon {
-  color: #a58979;
+  color: #ad9588;
   font-family: Arial, sans-serif;
-  font-size: 22px;
+  font-size: 21px;
   font-weight: 200;
   line-height: 1;
   transition: transform 0.3s ease;
@@ -2344,7 +2327,7 @@ body.map-modal-open {
 
 .account-group-content {
   max-height: 0;
-  padding: 0 16px;
+  padding: 0;
   overflow: hidden;
   opacity: 0;
   transition:
@@ -2354,16 +2337,22 @@ body.map-modal-open {
 }
 
 .account-group.is-open .account-group-content {
-  max-height: 1000px;
-  padding-top: 4px;
-  padding-bottom: 18px;
+  max-height: 1100px;
+  padding: 0 0 8px;
   opacity: 1;
 }
 
-.account-card {
-  padding: 20px 4px;
-  border-top: 1px solid #ebe4df;
+/* 개별 계좌 정보 행 */
+
+.account-entry {
+  padding: 23px 4px 24px;
+  border-top: 1px solid #eee7e2;
+  background: transparent;
   text-align: left;
+}
+
+.account-entry:first-child {
+  border-top: 0;
 }
 
 .account-card-header {
@@ -2375,33 +2364,34 @@ body.map-modal-open {
 
 .account-role {
   display: block;
-  margin-bottom: 5px;
-  color: #aa9386;
+  margin-bottom: 4px;
+  color: #b09688;
   font-size: 10px;
 }
 
 .account-card-header strong {
-  color: #4e4641;
+  color: #4f4743;
   font-size: 15px;
   font-weight: 500;
 }
 
 .account-bank {
   padding-top: 17px;
-  color: #857a74;
+  color: #9a908a;
   font-size: 11px;
   white-space: nowrap;
 }
 
 .account-number {
-  margin: 16px 0;
-  color: #4e4641;
-  font-family:
-    Arial,
-    sans-serif;
-  font-size: 16px;
-  letter-spacing: 0.5px;
+  margin: 15px 0 17px;
+  color: #564d48;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.45px;
 }
+
+/* 복사 버튼 */
 
 .account-actions {
   display: grid;
@@ -2410,28 +2400,36 @@ body.map-modal-open {
 }
 
 .account-copy-button {
-  min-height: 42px;
-  padding: 8px 5px;
-  border: 1px solid #d9cec7;
-  background: #fff;
-  color: #665c56;
+  min-height: 40px;
+  padding: 7px 8px;
+  border: 1px solid #e6ddd7;
+  border-radius: 0;
+  background: #fcfaf8;
+  color: #766d67;
   font-family: inherit;
   font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.2px;
   cursor: pointer;
   transition:
-    background 0.25s ease,
-    border-color 0.25s ease,
-    color 0.25s ease;
+    transform 0.16s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .account-copy-button:hover {
-  border-color: #a98c7d;
-  background: #a98c7d;
-  color: #fff;
+  border-color: #d4c6be;
+  background: #f6f1ed;
+  color: #625954;
+}
+
+.account-copy-button:active {
+  transform: scale(0.98);
 }
 
 .account-copy-all {
-  background: #faf7f5;
+  background: #f9f6f3;
 }
 
 /* 복사 완료 메시지 */
